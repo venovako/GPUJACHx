@@ -1,0 +1,21 @@
+HEADERS1=		\
+	HypJac.hpp	\
+	HypJacL2.hpp
+
+SOURCES1=		\
+	HypJacL2.cu	\
+	main.cu
+
+include ../share/Makefile.LNX
+
+HEADERS=$(HEADERS1) $(HEADERS2)
+SOURCES=$(SOURCES1) $(SOURCES2)
+EXE=x1.exe
+
+all: $(EXE)
+
+$(EXE): $(HEADERS) $(SOURCES) Makefile.LNX ../share/Makefile.LNX
+	$(NVCC) $(NVPPFLAGS) $(NVCCFLAGS) $(SOURCES) -o $@ $(NVLDFLAGS)
+
+clean:
+	-$(RM) $(EXE)
