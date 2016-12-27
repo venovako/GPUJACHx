@@ -30,13 +30,13 @@
 
 #ifdef MIN_N
 #error MIN_N defined
-#else // !MIN_N
+#else // N >= 4
 #define MIN_N 4u
 #endif // MIN_N
 
 #ifdef MAX_N
 #error MAX_N defined
-#else // !MAX_N
+#else // N bounded from above by...
 #ifdef _WIN32
 #define MAX_N 212u
 #else // POSIX
@@ -54,51 +54,55 @@
 #error N odd
 #endif // N
 
+// # of pivots in a parallel step
 #ifdef P
 #error P defined
-#else // !P
+#else // P = N / 2
 #define P ((N) >> 1u)
 #endif // P
 
+// # of parallel steps in a sweep
 #ifdef S
 #error S defined
-#else // !S
+#else // S = N - 1
 #define S ((N) - 1u)
 #endif // S
 
+// # of matrix entries in the strictly upper/lower triangle 
 #ifdef E
 #error E defined
-#else // !E
+#else // E = P * S
 #define E ((P) * (S))
 #endif // E
 
 #ifdef N_1
 #error N_1 defined
-#else // !N_1
+#else // N_1 = N - 1
 #define N_1 ((N) - 1u)
 #endif // N_1
 
 #ifdef S_1
 #error S_1 defined
-#else // !S_1
+#else // S_1 = S - 1
 #define S_1 ((S) - 1u)
 #endif // S_1
 
 #ifdef P_1
 #error P_1 defined
-#else // !P_1
+#else // P_1 = P - 1
 #define P_1 ((P) - 1u)
 #endif // P_1
 
 #ifdef E_1
 #error E_1 defined
-#else // !E_1
+#else // E_1 = E - 1
 #define E_1 ((E) - 1u)
 #endif // E_1
 
+// # of the pivots not colliding with a given one
 #ifdef NCP
 #error NCP defined
-#else // !NCP
+#else // NCP = E - ((N - 1) * 2 - 1)
 #define NCP ((E) - (((N_1) << 1u) - 1u))
 #endif // NCP
 
@@ -116,13 +120,13 @@ static void make_in_strat()
 #ifndef NDEBUG
   std::cerr << "Clearing memory... " << std::flush;
 #endif // !NDEBUG
-  memset(in_strat, 0, sizeof(in_strat));
-  memset(indep_sets, 0, sizeof(indep_sets));
-  memset(active_sets, 0, sizeof(active_sets));
-  memset(indep_cnts, 0, sizeof(indep_cnts));
-  memset(active_cnts, 0, sizeof(active_cnts));
-  memset(used_set, 0, sizeof(used_set));
-  memset(tmp_set, 0, sizeof(tmp_set));
+  (void)memset(in_strat, 0, sizeof(in_strat));
+  (void)memset(indep_sets, 0, sizeof(indep_sets));
+  (void)memset(active_sets, 0, sizeof(active_sets));
+  (void)memset(indep_cnts, 0, sizeof(indep_cnts));
+  (void)memset(active_cnts, 0, sizeof(active_cnts));
+  (void)memset(used_set, 0, sizeof(used_set));
+  (void)memset(tmp_set, 0, sizeof(tmp_set));
   max_used_cnt = used_cnt = 0u;
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
@@ -285,7 +289,7 @@ static void print_idx()
   static const std::streamsize w = std::streamsize(3);
 #elif ((E) <= 10000u)
   static const std::streamsize w = std::streamsize(4);
-#else
+#else // E <= 100000u
   static const std::streamsize w = std::streamsize(5);
 #endif // E
 
