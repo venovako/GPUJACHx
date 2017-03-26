@@ -15,7 +15,7 @@ CUBLAS=2
 endif # !CUBLAS
 
 ifndef HDF5
-HDF5=$(HOME)/hdf5_gnu-nompi
+HDF5=$(HOME)/hdf5
 endif # !HDF5
 
 HDF5_I=-I$(HDF5)/include
@@ -23,7 +23,7 @@ HDF5_L=-L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -ffp-contract=on,-march=native,-integrated-as
+NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -ffp-contract=on,-march=native,-integrated-as
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
@@ -33,6 +33,9 @@ else # debug
 NVPPFLAGS+=-UNDEBUG
 NVCCFLAGS+=-O0 -g -G -lineinfo -src-in-ptx -Xptxas -no-bb-merge,-v
 endif # NDEBUG
+
+NVPPFLAGS+=-UUSE_MULTI_GPU
+NVPPFLAGS+=-UUSE_MKL
 
 ifdef CUBLAS
 NVPPFLAGS+=-DHAVE_CUBLAS=$(CUBLAS)

@@ -15,17 +15,21 @@ CUBLAS=2
 endif # !CUBLAS
 
 ifndef HDF5
-HDF5=$(HOME)/hdf5_intel-nompi
+HDF5=$(HOME)/hdf5
 endif # !HDF5
 
 HDF5_I=-I$(HDF5)/include
 HDF5_L=-Xlinker -rpath=$(HDF5)/lib -L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
+ifeq ($(MKL),gnu_thread)
+THR=-fopenmp
+else # doesn't need OpenMP
 THR=-pthread
+endif # gnu_thread
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler $(THR),-march=native
+NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler $(THR),-march=native
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
@@ -36,12 +40,32 @@ NVPPFLAGS+=-UNDEBUG
 NVCCFLAGS+=-O0 -g -G -lineinfo -src-in-ptx -Xptxas -no-bb-merge,-v
 endif # NDEBUG
 
+ifdef MULTI_GPU
+ifndef MAGMA
+MAGMA=$(HOME)/magma
+endif # !MAGMA
+NVPPFLAGS+=-DUSE_MULTI_GPU -DADD_ -I$(MAGMA)/include
+NVLDFLAGS+=-L$(MAGMA)/lib -l magma,magmablas
+else # SINGLE_GPU
+NVPPFLAGS+=-UUSE_MULTI_GPU
+endif # MULTI_GPU
+
 ifdef CUBLAS
 NVPPFLAGS+=-DHAVE_CUBLAS=$(CUBLAS)
 NVLDFLAGS+=-l cublas
 else # !CUBLAS
 NVPPFLAGS+=-UHAVE_CUBLAS
 endif # CUBLAS
+
+ifdef MKL
+NVPPFLAGS+=-I$(MKLROOT)/include -DUSE_MKL=$(MKL)
+NVLDFLAGS+=-L$(MKLROOT)/lib/intel64 -l mkl_gf_lp64,mkl_$(MKL),mkl_core
+ifeq ($(MKL),intel_thread)
+NVLDFLAGS+=-liomp5
+endif # intel_thread
+else # !MKL
+NVPPFLAGS+=-UUSE_MKL
+endif # MKL
 
 NVLDFLAGS+=-l z,dl,m
 

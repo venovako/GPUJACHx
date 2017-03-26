@@ -3,7 +3,7 @@ RM=del /F
 !ENDIF # !RM
 
 !IFNDEF MSVC_VERSION
-MSVC_VERSION=2013
+MSVC_VERSION=2015
 !ENDIF # !MSVC_VERSION
 
 !IFNDEF NVCC
@@ -27,7 +27,7 @@ HDF5_L=-L$(HDF5)\lib
 HDF5_l=-l libhdf5_hl,libhdf5
 
 NVPPFLAGS=-I. -I..\share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=--cl-version $(MSVC_VERSION) -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD
+NVCCFLAGS=--cl-version $(MSVC_VERSION) -std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 !IFDEF NDEBUG
@@ -44,6 +44,17 @@ NVLDFLAGS=$(NVLDFLAGS) -l cublas
 !ELSE # !CUBLAS
 NVPPFLAGS=$(NVPPFLAGS) -UHAVE_CUBLAS
 !ENDIF # CUBLAS
+
+!IFDEF MKL
+!IF ("$(MKL)"!="sequential")
+!ERROR MKL is only supported without threading (sequential)
+!ELSE # sequential
+NVPPFLAGS=$(NVPPFLAGS) -I$(MKLROOT)\include -DUSE_MKL=$(MKL)
+NVLDFLAGS=$(NVLDFLAGS) -L$(MKLROOT)\lib\intel64 -lmkl_intel_lp64_dll,mkl_sequential_dll,mkl_core_dll
+!ENDIF # !sequential
+!ELSE # !MKL
+NVPPFLAGS=$(NVPPFLAGS) -UUSE_MKL
+!ENDIF # MKL
 
 HEADERS2=						\
 	..\share\cuda_helper.hpp			\

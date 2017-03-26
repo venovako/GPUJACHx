@@ -25,6 +25,24 @@
 #endif // !_GNU_SOURCE
 #endif // _WIN32
 
+#ifdef USE_MKL
+#ifndef MKL_Complex8
+#ifdef __cplusplus
+#define MKL_Complex8 std::complex<float>
+#else // C99
+#define MKL_Complex8 float _Complex
+#endif // __cplusplus
+#endif // !MKL_Complex8
+
+#ifndef MKL_Complex16
+#ifdef __cplusplus
+#define MKL_Complex16 std::complex<double>
+#else // C99
+#define MKL_Complex16 double _Complex
+#endif // __cplusplus
+#endif // !MKL_Complex16
+#endif // USE_MKL
+
 #ifdef __INTEL_COMPILER
 #include <mathimf.h>
 #else // NVCC host compiler
@@ -36,6 +54,10 @@
 #include <complex.h>
 #endif // __cplusplus
 #endif // __INTEL_COMPILER
+
+#ifdef USE_MKL
+#include <mkl.h>
+#endif // USE_MKL
 
 #ifdef __cplusplus
 #include <cassert>
