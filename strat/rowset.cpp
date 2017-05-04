@@ -30,8 +30,8 @@
 
 #ifdef MIN_N
 #error MIN_N defined
-#else // N >= 4
-#define MIN_N 4u
+#else // N >= 2
+#define MIN_N 2u
 #endif // MIN_N
 
 #ifdef MAX_N
@@ -114,6 +114,7 @@ typedef unsigned short ushort;
 static ushort indep_sets[E_1][NCP], active_sets[E_1][NCP];
 static ushort indep_cnts[E_1], active_cnts[E_1];
 static ushort used_set[E], tmp_set[E], used_cnt, max_used_cnt;
+static unsigned long long btrack;
 
 static void make_in_strat()
 {
@@ -128,6 +129,7 @@ static void make_in_strat()
   (void)memset(used_set, 0, sizeof(used_set));
   (void)memset(tmp_set, 0, sizeof(tmp_set));
   max_used_cnt = used_cnt = 0u;
+  btrack = 0ull;
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
 #endif // !NDEBUG
@@ -187,7 +189,6 @@ static bool next_pivot()
       const ushort P_pix = (P - ushort(qr.rem)) << 1u;
       const ushort prev_cnt = active_cnts[prev_ix];
       ushort j, prev_cnt_ = prev_cnt - needed;
-      const ushort *const prev_end = &(active_sets[prev_ix][prev_cnt]);
 
       for (j = 0u; j < prev_cnt_; ++j) {
         const ushort my_ix = active_sets[prev_ix][j];
@@ -200,6 +201,7 @@ static bool next_pivot()
       if (j < prev_cnt_)
         prev_cnt_ = j;
 
+      const ushort *const prev_end = &(active_sets[prev_ix][prev_cnt]);
       for (ushort i = 0u; i < prev_cnt_; ++i) {
         const ushort my_ix = active_sets[prev_ix][i];
         const ushort mync_cnt = indep_cnts[my_ix];
@@ -213,7 +215,10 @@ static bool next_pivot()
           if (next_pivot())
             return true;
           --used_cnt;
+          ++btrack;
         }
+        else
+          ++btrack;
       }
     }
     else {
@@ -221,6 +226,7 @@ static bool next_pivot()
       if (next_pivot())
         return true;
       --used_cnt;
+      ++btrack;
     }
   }
   else if (used_cnt == E)
@@ -240,6 +246,7 @@ static bool next_pivot()
     if (next_pivot())
       return true;
     --used_cnt;
+    ++btrack;
   }
   return false;
 }
@@ -340,5 +347,6 @@ int main(int argc, char *argv[])
 #ifndef NDEBUG
   print_idx();
 #endif // !NDEBUG
+  std::cout << "# of failed attempts = " << btrack << std::endl;
   return EXIT_SUCCESS;
 }
