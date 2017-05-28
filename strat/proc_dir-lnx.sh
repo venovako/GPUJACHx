@@ -7,7 +7,7 @@ do
     echo \#include \"$I\" >> $1.c
 done
 rm -f $1.o
-gcc -O3 -march=native -fPIC -c $1.c
+gcc -Ofast -march=native -fPIC -c $1.c
 rm -f $1.c
 mv $1.o ..
 popd

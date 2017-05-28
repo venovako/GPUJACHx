@@ -7,7 +7,7 @@ do
     echo \#include \"$I\" >> $1.c
 done
 rm -f $1.o
-clang -O3 -march=native -integrated-as -c $1.c
+clang -Ofast -march=native -integrated-as -c $1.c
 rm -f $1.c
 mv $1.o ..
 popd
