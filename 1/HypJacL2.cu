@@ -6,6 +6,10 @@
 #include "cuda_memory_helper.hpp"
 #include "my_utils.hpp"
 
+#ifdef ANIMATE
+#include "vn_lib.h"
+#endif // ANIMATE
+
 int // 0 if OK, < 0 if invalid argument, > 0 if error
 hypJacL2
 (
@@ -126,6 +130,12 @@ hypJacL2
   const unsigned swp = swp_max[1u];
   unsigned blk_swp = 0u;
 
+#ifdef ANIMATE
+  vn_mtxvis_ctx *ctx = static_cast<vn_mtxvis_ctx*>(NULL);
+  SYSI_CALL(vn_mtxvis_start(&ctx, "H", 11, nrow, ncol, 1, 1, 1));
+  SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+#endif // ANIMATE
+
   while (blk_swp < swp) {
     *cvg_dat = 0ul;
 
@@ -134,6 +144,13 @@ hypJacL2
         defJac1(blk_stp, definite);
       else
         hypJac1(blk_stp, nplus);
+
+#ifdef ANIMATE
+      CUDA_CALL(cudaDeviceSynchronize());
+      CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+      CUDA_CALL(cudaDeviceSynchronize());
+      SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+#endif // ANIMATE
     }
 
     ++blk_swp;
@@ -149,6 +166,10 @@ hypJacL2
     if (!cvg_b)
       break;
   }
+
+#ifdef ANIMATE
+  SYSI_CALL(vn_mtxvis_stop(ctx));
+#endif // ANIMATE
 
   *glbSwp = blk_swp;
   initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(ldd), static_cast<cudaStream_t>(NULL));
