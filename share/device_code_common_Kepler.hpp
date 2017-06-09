@@ -11,43 +11,43 @@ dSum32(const double x)
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 16);
-  hi_his = __shfl_xor(hi_my, 16);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 16);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 16);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my += x_his;
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 8);
-  hi_his = __shfl_xor(hi_my, 8);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 8);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 8);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my += x_his;
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 4);
-  hi_his = __shfl_xor(hi_my, 4);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 4);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 4);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my += x_his;
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 2);
-  hi_his = __shfl_xor(hi_my, 2);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 2);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 2);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my += x_his;
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 1);
-  hi_his = __shfl_xor(hi_my, 1);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 1);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 1);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my += x_his;
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl(lo_my, 0);
-  hi_his = __shfl(hi_my, 0);
+  lo_his = __shfl_sync(~0u, lo_my, 0);
+  hi_his = __shfl_sync(~0u, hi_my, 0);
   x_his = __hiloint2double(hi_his, lo_his);
 
   return x_his;
@@ -63,43 +63,43 @@ dMax32(const double x)
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 16);
-  hi_his = __shfl_xor(hi_my, 16);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 16);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 16);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmax(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 8);
-  hi_his = __shfl_xor(hi_my, 8);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 8);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 8);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmax(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 4);
-  hi_his = __shfl_xor(hi_my, 4);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 4);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 4);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmax(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 2);
-  hi_his = __shfl_xor(hi_my, 2);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 2);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 2);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmax(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 1);
-  hi_his = __shfl_xor(hi_my, 1);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 1);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 1);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmax(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl(lo_my, 0);
-  hi_his = __shfl(hi_my, 0);
+  lo_his = __shfl_sync(~0u, lo_my, 0);
+  hi_his = __shfl_sync(~0u, hi_my, 0);
   x_his = __hiloint2double(hi_his, lo_his);
 
   return x_his;
@@ -115,43 +115,43 @@ dMin32(const double x)
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 16);
-  hi_his = __shfl_xor(hi_my, 16);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 16);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 16);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmin(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 8);
-  hi_his = __shfl_xor(hi_my, 8);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 8);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 8);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmin(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 4);
-  hi_his = __shfl_xor(hi_my, 4);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 4);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 4);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmin(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 2);
-  hi_his = __shfl_xor(hi_my, 2);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 2);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 2);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmin(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl_xor(lo_my, 1);
-  hi_his = __shfl_xor(hi_my, 1);
+  lo_his = __shfl_xor_sync(~0u, lo_my, 1);
+  hi_his = __shfl_xor_sync(~0u, hi_my, 1);
   x_his = __hiloint2double(hi_his, lo_his);
   x_my = fmin(x_my, x_his);
 
   lo_my = __double2loint(x_my);
   hi_my = __double2hiint(x_my);
-  lo_his = __shfl(lo_my, 0);
-  hi_his = __shfl(hi_my, 0);
+  lo_his = __shfl_sync(~0u, lo_my, 0);
+  hi_his = __shfl_sync(~0u, hi_my, 0);
   x_his = __hiloint2double(hi_his, lo_his);
 
   return x_his;

@@ -32,7 +32,7 @@ NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 !IFDEF NDEBUG
 NVPPFLAGS=$(NVPPFLAGS) -DNDEBUG
-NVCCFLAGS=$(NVCCFLAGS) -O$(NDEBUG) -Xptxas -abi=no,-v
+NVCCFLAGS=$(NVCCFLAGS) -O$(NDEBUG) -Xptxas -v
 !ELSE # debug
 NVPPFLAGS=$(NVPPFLAGS) -UNDEBUG
 NVCCFLAGS=$(NVCCFLAGS) -O0 -g -G -lineinfo -src-in-ptx -Xptxas -no-bb-merge,-v
