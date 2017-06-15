@@ -132,8 +132,13 @@ hypJacL2
 
 #ifdef ANIMATE
   vn_mtxvis_ctx *ctx = static_cast<vn_mtxvis_ctx*>(NULL);
-  SYSI_CALL(vn_mtxvis_start(&ctx, "H", 11, nrow, ncol, 1, 1, 1));
-  SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+  if (ncol < 10000u) {
+    char fname[8] = { '\0' };
+    (void)sprintf(fname, "%c%x_%04u", (definite ? 'A' : 'H'), routine, ncol);
+    SYSI_CALL(vn_mtxvis_start(&ctx, fname, (VN_MTXVIS_OP_AtA | VN_MTXVIS_FN_Lg | VN_MTXVIS_FF_Bin), nrow, ncol, 1, 1, 7));
+    if (ctx)
+      SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+  }
 #endif // ANIMATE
 
   while (blk_swp < swp) {
@@ -146,10 +151,12 @@ hypJacL2
         hypJac1(blk_stp, nplus);
 
 #ifdef ANIMATE
-      CUDA_CALL(cudaDeviceSynchronize());
-      CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
-      CUDA_CALL(cudaDeviceSynchronize());
-      SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+      if (ctx) {
+        CUDA_CALL(cudaDeviceSynchronize());
+        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaDeviceSynchronize());
+        SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+      }
 #endif // ANIMATE
     }
 
@@ -168,7 +175,8 @@ hypJacL2
   }
 
 #ifdef ANIMATE
-  SYSI_CALL(vn_mtxvis_stop(ctx));
+  if (ctx)
+    SYSI_CALL(vn_mtxvis_stop(ctx));
 #endif // ANIMATE
 
   *glbSwp = blk_swp;
