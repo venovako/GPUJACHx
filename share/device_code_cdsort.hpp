@@ -25,6 +25,7 @@ MYDEVFN unsigned dDefJacL0s
 #endif // __CUDA_ARCH__
 }
 
+// TODO: implement the new convergence criterion for the hyperbolic codes as well.
 // TODO: implement DRMAC version of dHypJacL0s, and move this one to KISS.
 MYDEVFN unsigned dHypJacL0s
 (
