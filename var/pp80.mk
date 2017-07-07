@@ -1,9 +1,9 @@
 RM=rm -f
 FC=gfortran
 ifdef NDEBUG
-FOPTS=-std=f2008ts $(MYINC) -O$(NDEBUG) -cpp -DNDEBUG -march=native -Wa,-q -fgcse-las -fgcse-sm -fipa-pta -ftree-loop-distribution -ftree-loop-im -ftree-loop-ivcanon -fivopts -fvect-cost-model=unlimited -fvariable-expansion-in-unroller -fopenmp -fstack-arrays -Wall -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
+FOPTS=-std=f2008ts -O$(NDEBUG) -cpp -DNDEBUG -march=native -Wa,-q -fgcse-las -fgcse-sm -fipa-pta -ftree-loop-distribution -ftree-loop-im -ftree-loop-ivcanon -fivopts -fvect-cost-model=unlimited -fvariable-expansion-in-unroller -fopenmp -fstack-arrays -Wall -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 else
-FOPTS=-std=f2008ts $(MYINC) -Og -cpp -march=native -Wa,-q -fopenmp -fstack-arrays -fcheck=all -finit-local-zero -finit-real=snan -ffpe-trap=invalid,zero,overflow -Wall -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all # -finit-derived
+FOPTS=-std=f2008ts -Og -cpp -march=native -Wa,-q -fopenmp -fstack-arrays -fcheck=all -finit-local-zero -finit-real=snan -ffpe-trap=invalid,zero,overflow -Wall -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all # -finit-derived
 endif
 HDF5=$(HOME)/hdf5
 H5INC=-I$(HDF5)/include
