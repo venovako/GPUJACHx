@@ -140,15 +140,17 @@ MYDEVFN unsigned dDefJacL0posd
       }
 #endif // __CUDA_ARCH__
 
+      if (transf_G < transf_V)
+        transf_G = transf_V;
       swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
 
-    blk_transf_V += static_cast<unsigned>(swp_transf_V);
     if (swp_transf_G)
       blk_transf_G += static_cast<unsigned>(swp_transf_G);
     else
       break;
+    blk_transf_V += static_cast<unsigned>(swp_transf_V);
   }
 
   if (!y && !x) {
@@ -158,7 +160,7 @@ MYDEVFN unsigned dDefJacL0posd
       blk_transf |= blk_transf_G;
       asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
     }
-    else if (blk_transf_G)
+    else
       asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
   }
 
@@ -304,15 +306,17 @@ MYDEVFN unsigned dDefJacL0negd
       }
 #endif
 
+      if (transf_G < transf_V)
+        transf_G = transf_V;
       swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
 
-    blk_transf_V += static_cast<unsigned>(swp_transf_V);
     if (swp_transf_G)
       blk_transf_G += static_cast<unsigned>(swp_transf_G);
     else
       break;
+    blk_transf_V += static_cast<unsigned>(swp_transf_V);
   }
 
   if (!y && !x) {
@@ -322,7 +326,7 @@ MYDEVFN unsigned dDefJacL0negd
       blk_transf |= blk_transf_G;
       asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
     }
-    else if (blk_transf_G)
+    else
       asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
   }
 
