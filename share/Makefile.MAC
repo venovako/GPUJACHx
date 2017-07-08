@@ -31,7 +31,7 @@ NVPPFLAGS+=-DNDEBUG
 NVCCFLAGS+=-O$(NDEBUG) -Xptxas -v
 else # debug
 NVPPFLAGS+=-UNDEBUG
-NVCCFLAGS+=-O0 -g -G -lineinfo -src-in-ptx -Xptxas -no-bb-merge,-v
+NVCCFLAGS+=-O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-v
 endif # NDEBUG
 
 NVPPFLAGS+=-UUSE_MULTI_GPU

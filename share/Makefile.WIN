@@ -35,7 +35,7 @@ NVPPFLAGS=$(NVPPFLAGS) -DNDEBUG
 NVCCFLAGS=$(NVCCFLAGS) -O$(NDEBUG) -Xptxas -v
 !ELSE # debug
 NVPPFLAGS=$(NVPPFLAGS) -UNDEBUG
-NVCCFLAGS=$(NVCCFLAGS) -O0 -g -G -lineinfo -src-in-ptx -Xptxas -no-bb-merge,-v
+NVCCFLAGS=$(NVCCFLAGS) -O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-v
 !ENDIF # NDEBUG
 
 !IFDEF CUBLAS

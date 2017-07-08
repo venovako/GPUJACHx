@@ -68,60 +68,52 @@ MYDEVFN unsigned dDefJacL0posd
           if (Dp >= Dq) {
             const double Gp_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, p) = Gp_;
-            transf_G = (Gp != Gp_);
             const double Gq_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G |= (Gq != Gq_);
+            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
-            transf_V = (Vp != Vp_);
             const double Vq_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V |= (Vq != Vq_);
+            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
-            transf_G = (Gq != Gq_);
             const double Gp_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G |= (Gp != Gp_);
+            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
-            transf_V = (Vq != Vq_);
             const double Vp_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V |= (Vp != Vp_);
+            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
         else {
           if (Dp >= Dq) {
             const double Gp_ = __fma_rn(t_, Gq, Gp);
             F32(G, x, p) = Gp_;
-            transf_G = (Gp != Gp_);
             const double Gq_ = __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G |= (Gq != Gq_);
+            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
-            transf_V = (Vp != Vp_);
             const double Vq_ = __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V |= (Vq != Vq_);
+            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
-            transf_G = (Gq != Gq_);
             const double Gp_ = __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G |= (Gp != Gp_);
+            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
-            transf_V = (Vq != Vq_);
             const double Vp_ = __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V |= (Vp != Vp_);
+            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
       }
@@ -234,60 +226,52 @@ MYDEVFN unsigned dDefJacL0negd
           if (Dp <= Dq) {
             const double Gp_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, p) = Gp_;
-            transf_G = (Gp != Gp_);
             const double Gq_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G |= (Gq != Gq_);
+            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
-            transf_V = (Vp != Vp_);
             const double Vq_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V |= (Vq != Vq_);
+            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
-            transf_G = (Gq != Gq_);
             const double Gp_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G |= (Gp != Gp_);
+            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
-            transf_V = (Vq != Vq_);
             const double Vp_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V |= (Vp != Vp_);
+            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
         else {
           if (Dp <= Dq) {
             const double Gp_ = __fma_rn(t_, Gq, Gp);
             F32(G, x, p) = Gp_;
-            transf_G = (Gp != Gp_);
             const double Gq_ = __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G |= (Gq != Gq_);
+            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
-            transf_V = (Vp != Vp_);
             const double Vq_ = __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V |= (Vq != Vq_);
+            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
-            transf_G = (Gq != Gq_);
             const double Gp_ = __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G |= (Gp != Gp_);
+            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
-            transf_V = (Vq != Vq_);
             const double Vp_ = __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V |= (Vp != Vp_);
+            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
       }
