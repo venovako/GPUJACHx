@@ -51,10 +51,9 @@ MYDEVFN unsigned dDefJacL0posd
         Apq_ = fabs(Apq),
         Dpq_ = Dp_ * Dq_;
 
-      __syncthreads();
-
-      int transf_G = !(Apq_ < (Dpq_ * HYPJAC_MYTOL));
+      const int transf_G = !(Apq_ < (Dpq_ * HYPJAC_MYTOL));
       int transf_V = 0;
+      swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
 
       if (transf_G) {
         double c, t;
@@ -70,24 +69,20 @@ MYDEVFN unsigned dDefJacL0posd
             F32(G, x, p) = Gp_;
             const double Gq_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
             const double Vq_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
             const double Gp_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
             const double Vp_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
         else {
@@ -96,7 +91,6 @@ MYDEVFN unsigned dDefJacL0posd
             F32(G, x, p) = Gp_;
             const double Gq_ = __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
             const double Vq_ = __fma_rn(t, Vp, Vq);
@@ -108,7 +102,6 @@ MYDEVFN unsigned dDefJacL0posd
             F32(G, x, q) = Gq_;
             const double Gp_ = __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
             const double Vp_ = __fma_rn(t, Vp, Vq);
@@ -132,9 +125,6 @@ MYDEVFN unsigned dDefJacL0posd
       }
 #endif // __CUDA_ARCH__
 
-      if (transf_G < transf_V)
-        transf_G = transf_V;
-      swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
 
@@ -152,7 +142,7 @@ MYDEVFN unsigned dDefJacL0posd
       blk_transf |= blk_transf_G;
       asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
     }
-    else
+    else if (blk_transf_G)
       asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
   }
 
@@ -209,10 +199,9 @@ MYDEVFN unsigned dDefJacL0negd
         Apq_ = fabs(Apq),
         Dpq_ = Dp_ * Dq_;
 
-      __syncthreads();
-
-      int transf_G = !(Apq_ < (Dpq_ * HYPJAC_MYTOL));
+      const int transf_G = !(Apq_ < (Dpq_ * HYPJAC_MYTOL));
       int transf_V = 0;
+      swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
 
       if (transf_G) {
         double c, t;
@@ -228,24 +217,20 @@ MYDEVFN unsigned dDefJacL0negd
             F32(G, x, p) = Gp_;
             const double Gq_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
             const double Vq_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, q) = Vq_;
-            transf_V = (Vp != Vp_) || (Vq != Vq_);
           }
           else {
             const double Gq_ = c * __fma_rn(t_, Gq, Gp);
             F32(G, x, q) = Gq_;
             const double Gp_ = c * __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = c * __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
             const double Vp_ = c * __fma_rn(t, Vp, Vq);
             F32(V, x, p) = Vp_;
-            transf_V = (Vq != Vp_) || (Vp != Vq_);
           }
         }
         else {
@@ -254,7 +239,6 @@ MYDEVFN unsigned dDefJacL0negd
             F32(G, x, p) = Gp_;
             const double Gq_ = __fma_rn(t, Gp, Gq);
             F32(G, x, q) = Gq_;
-            transf_G = (Gp != Gp_) || (Gq != Gq_);
             const double Vp_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, p) = Vp_;
             const double Vq_ = __fma_rn(t, Vp, Vq);
@@ -266,7 +250,6 @@ MYDEVFN unsigned dDefJacL0negd
             F32(G, x, q) = Gq_;
             const double Gp_ = __fma_rn(t, Gp, Gq);
             F32(G, x, p) = Gp_;
-            transf_G = (Gq != Gp_) || (Gp != Gq_);
             const double Vq_ = __fma_rn(t_, Vq, Vp);
             F32(V, x, q) = Vq_;
             const double Vp_ = __fma_rn(t, Vp, Vq);
@@ -290,9 +273,6 @@ MYDEVFN unsigned dDefJacL0negd
       }
 #endif
 
-      if (transf_G < transf_V)
-        transf_G = transf_V;
-      swp_transf_G += (__syncthreads_count(transf_G) >> WARP_SZ_LGi);
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
 
@@ -310,7 +290,7 @@ MYDEVFN unsigned dDefJacL0negd
       blk_transf |= blk_transf_G;
       asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
     }
-    else
+    else if (blk_transf_G)
       asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
   }
 
