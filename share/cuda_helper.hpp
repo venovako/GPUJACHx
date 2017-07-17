@@ -60,4 +60,7 @@
 EXTERN_C int
 configureGPU(const int dev) throw();
 
+EXTERN_C int
+configureGPUex(const int dev, const unsigned maxShMemB) throw();
+
 #endif // !CUDA_HELPER_HPP

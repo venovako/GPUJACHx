@@ -11,10 +11,18 @@
 
 EXTERN_C TLS char err_msg[err_msg_size];
 
+#ifndef WARN
+#define WARN(msg) {                                                             \
+    (void)fprintf(stderr, "[WARNING] %s(%d): %s\n", __FILE__, __LINE__, (msg)); \
+  }
+#else // WARN
+#error WARN not definable externally
+#endif // !WARN
+
 #ifndef DIE
-#define DIE(msg) {                                                      \
-    (void)fprintf(stderr, "%s(%d): %s\n", __FILE__, __LINE__, (msg));   \
-    exit(EXIT_FAILURE);                                                 \
+#define DIE(msg) {                                                            \
+    (void)fprintf(stderr, "[ERROR] %s(%d): %s\n", __FILE__, __LINE__, (msg)); \
+    exit(EXIT_FAILURE);                                                       \
   }
 #else // DIE
 #error DIE not definable externally
@@ -23,7 +31,7 @@ EXTERN_C TLS char err_msg[err_msg_size];
 #ifndef SYSI_CALL
 #define SYSI_CALL(call) {						\
     if (0 != static_cast<int>(call)) {					\
-      (void)fprintf(stderr, "%s(%d): %s",				\
+      (void)fprintf(stderr, "[ERROR] %s(%d): %s",                       \
 		    __FILE__, __LINE__, strerror(errno));		\
       exit(EXIT_FAILURE);                                               \
     }									\
@@ -35,7 +43,7 @@ EXTERN_C TLS char err_msg[err_msg_size];
 #ifndef SYSP_CALL
 #define SYSP_CALL(call) {						\
     if (NULL == static_cast<const void*>(call)) {			\
-      (void)fprintf(stderr, "%s(%d): %s",				\
+      (void)fprintf(stderr, "[ERROR] %s(%d): %s",                       \
 		    __FILE__, __LINE__, strerror(errno));		\
       exit(EXIT_FAILURE);                                               \
     }									\
