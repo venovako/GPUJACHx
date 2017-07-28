@@ -7,24 +7,6 @@
 #define _GNU_SOURCE
 #endif // !_GNU_SOURCE
 
-#ifdef USE_MKL
-#ifndef MKL_Complex8
-#ifdef __cplusplus
-#define MKL_Complex8 std::complex<float>
-#else // C99
-#define MKL_Complex8 float _Complex
-#endif // __cplusplus
-#endif // !MKL_Complex8
-
-#ifndef MKL_Complex16
-#ifdef __cplusplus
-#define MKL_Complex16 std::complex<double>
-#else // C99
-#define MKL_Complex16 double _Complex
-#endif // __cplusplus
-#endif // !MKL_Complex16
-#endif // USE_MKL
-
 #ifdef __INTEL_COMPILER
 #include <mathimf.h>
 #else // NVCC host compiler
@@ -36,10 +18,6 @@
 #include <complex.h>
 #endif // __cplusplus
 #endif // __INTEL_COMPILER
-
-#ifdef USE_MKL
-#include <mkl.h>
-#endif // USE_MKL
 
 #ifdef __cplusplus
 #include <cassert>
@@ -89,11 +67,11 @@
 #error TLS not definable externally
 #endif // TLS
 
-#ifdef USE_MULTI_GPU
+#ifdef USE_MULTI_THR
 #define TLS __thread
-#else // !USE_MULTI_GPU
+#else // !USE_MULTI_THR
 #define TLS
-#endif // USE_MULTI_GPU
+#endif // USE_MULTI_THR
 
 #ifdef Long
 #error Long not definable externally

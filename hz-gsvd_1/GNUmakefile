@@ -8,20 +8,26 @@ ifndef GPU_ARCH
 GPU_ARCH=sm_30
 endif # !GPU_ARCH
 
-ifndef CUBLAS
-CUBLAS=2
-endif # !CUBLAS
-
 ifndef HDF5
 HDF5=$(HOME)/hdf5
 endif # !HDF5
 
+ifndef CVG
+CVG=0
+endif # !CVG
+
 HDF5_I=-I$(HDF5)/include
 HDF5_L=-L$(HDF5)/lib
-HDF5_l=-l hdf5_hl,hdf5
 
-NVPPFLAGS=-I. -I../share $(HDF5_I) -DHZ_GSVD
-NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -ffp-contract=on,-march=native,-integrated-as
+# e.g., mpi,z
+ifdef HDF5_FULL
+HDF5_l=-l hdf5_hl,hdf5,$(HDF5_FULL)
+else # minimal HDF5
+HDF5_l=-l hdf5_hl,hdf5
+endif # HDF5_FULL
+
+NVPPFLAGS=-I. $(HDF5_I) -DHZ_GSVD -DCVG=$(CVG)
+NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -march=native
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
@@ -32,17 +38,13 @@ NVPPFLAGS+=-UNDEBUG
 NVCCFLAGS+=-O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-v
 endif # NDEBUG
 
-NVPPFLAGS+=-UUSE_MULTI_GPU
-NVPPFLAGS+=-UUSE_MKL
+# e.g. -ffp-contract=on,-integrated-as
+ifdef HOST_FLAGS
+NVCCFLAGS+=-Xcompiler $(HOST_FLAGS)
+endif # HOST_FLAGS
 
-ifdef CUBLAS
-NVPPFLAGS+=-DHAVE_CUBLAS=$(CUBLAS)
-NVLDFLAGS+=-l cublas
-else # !CUBLAS
-NVPPFLAGS+=-UHAVE_CUBLAS
-endif # CUBLAS
-
-NVLDFLAGS+=-l z,dl,m
+NVPPFLAGS+=-UUSE_MULTI_THR
+NVLDFLAGS+=-l dl,m
 
 HEADERS=				\
 	HZ.hpp				\
@@ -53,7 +55,7 @@ HEADERS=				\
 	defines.hpp			\
 	device_code.hpp			\
 	device_code_accumV.hpp 		\
-	device_code_cdsort.hpp 		\
+	device_code_cdsort_$(CVG).hpp	\
 	device_code_cdsort_accumV.hpp	\
 	device_code_cdsort_solveV.hpp	\
 	device_code_common.hpp		\

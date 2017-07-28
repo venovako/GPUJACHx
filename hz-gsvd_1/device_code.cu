@@ -3,7 +3,13 @@
 #include "device_code.hpp"
 #include "device_code_common.hpp"
 #include "device_code_accumV.hpp"
-#include "device_code_cdsort.hpp"
+#if (CVG == 0)
+#include "device_code_cdsort_0.hpp"
+#elif (CVG == 1)
+#include "device_code_cdsort_1.hpp"
+#else // unknown CVG
+#error CVG unknown
+#endif // ?CVG
 #include "device_code_cdsort_accumV.hpp"
 #include "device_code_cdsort_solveV.hpp"
 
