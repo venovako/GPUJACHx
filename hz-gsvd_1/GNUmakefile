@@ -57,7 +57,6 @@ HEADERS=				\
 	device_code_accumV.hpp 		\
 	device_code_cdsort_$(CVG).hpp	\
 	device_code_cdsort_accumV.hpp	\
-	device_code_cdsort_solveV.hpp	\
 	device_code_common.hpp		\
 	device_code_globals.hpp		\
 	device_code_common_rotate.hpp	\

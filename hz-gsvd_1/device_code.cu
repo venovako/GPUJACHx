@@ -11,19 +11,10 @@
 #error CVG unknown
 #endif // ?CVG
 #include "device_code_cdsort_accumV.hpp"
-#include "device_code_cdsort_solveV.hpp"
 
 #include "my_utils.hpp"
 
 static const dim3 hzL1bD(HZ_L1_THREADS_PER_BLOCK_X, HZ_L1_THREADS_PER_BLOCK_Y, 1u);
-
-void HZ_L1_s(const unsigned step) throw()
-{
-  const dim3 hzL1gD(STRAT1_PAIRS, 1u, 1u);
-  CUDA_CALL(cudaConfigureCall(hzL1gD, hzL1bD));
-  CUDA_CALL(cudaSetupArgument(step, static_cast<size_t>(0u)));
-  CUDA_CALL(cudaLaunch(dHZ_L1_s));
-}
 
 void HZ_L1_sv(const unsigned step) throw()
 {

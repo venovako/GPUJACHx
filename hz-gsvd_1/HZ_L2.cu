@@ -13,10 +13,8 @@
 int // 0 if OK, < 0 if invalid argument, > 0 if error
 HZ_L2
 (
- const unsigned routine,     // IN, routine ID, <= 15, (B_FS)_2
- // B: block-oriented or full-block,
- // F: full (U \Sigma V^T) or partial (U \Sigma) SVD,
- // S: innermost (32x32 blocks) sorting of eigenvalues.
+ const unsigned routine,     // IN, routine ID, <= 15, (B___)_2
+ // B: block-oriented or full-block
  const unsigned nrow,        // IN, number of rows of G, == 0 (mod 256)
  const unsigned ncol,        // IN, number of columns of G, <= nrow, == 0 (mod 128)
  double *const hF,           // INOUT, ldhF x ncol host array in Fortran order,
@@ -24,9 +22,9 @@ HZ_L2
  double *const hG,           // INOUT, ldhG x ncol host array in Fortran order,
  // IN: factor G, OUT: U \Sigma of G = U \Sigma V^T
  const unsigned ldhG,        // IN, leading dimension of G, >= nrow
- double *const hV,           // OUT, optional, ldhV x ncol host array in Fortran order,
+ double *const hV,           // OUT, ldhV x ncol host array in Fortran order,
  // V^{-T} of G = U \Sigma V^T
- const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= nrow
+ const unsigned ldhV,        // IN, leading dimension of V^{-T}, >= nrow
  double *const hS,           // OUT, the generalized singular values, optionally sorted in descending order
  double *const hH,           // ||F_i||_2/sqrt(||F_i||_2^2 + ||G_i||_2^2)
  double *const hK,           // ||G_i||_2/sqrt(||F_i||_2^2 + ||G_i||_2^2)
@@ -43,14 +41,7 @@ HZ_L2
   if (routine >= 16u)
     return -1;
 
-  const bool
-    cdsort = (routine & HZ_CDSORT_1),
-    full_svd = (routine & HZ_FULL_SVD),
-    blk_ori = (routine & HZ_BLK_ORI);
-
-  // sorting is mandatory, for now
-  if (!cdsort)
-    return -1;
+  const bool blk_ori = (routine & HZ_BLK_ORI);
 
   if (!nrow || (nrow % 64u))
     return -2;
@@ -70,12 +61,10 @@ HZ_L2
   if (ldhG < nrow)
     return -7;
 
-  if (full_svd) {
-    if (!hV)
-      return -8;
-    if (ldhV < nrow)
-      return -9;
-  }
+  if (!hV)
+    return -8;
+  if (ldhV < nrow)
+    return -9;
 
   if (!hS)
     return -10;
@@ -104,14 +93,13 @@ HZ_L2
     *beta_ptr = static_cast<double*>(NULL);
 
   size_t ldd = static_cast<size_t>(nrow);
-  double *ptr = allocDeviceMtx<double>(ldd, static_cast<size_t>(nrow), static_cast<size_t>((full_svd ? 3u : 2u) * ncol + 3u), true);
+  double *ptr = allocDeviceMtx<double>(ldd, static_cast<size_t>(nrow), static_cast<size_t>(3u * ncol + 3u), true);
   double *const dF = ptr;
   ptr += ldd * ncol;
   double *const dG = ptr;
   ptr += ldd * ncol;
-  double *const dV = (full_svd ? ptr : static_cast<double*>(NULL));
-  if (full_svd)
-    ptr += ldd * ncol;
+  double *const dV = ptr;
+  ptr += ldd * ncol;
   double *const dS = ptr;
   ptr += ldd;
   double *const dH = ptr;
@@ -124,20 +112,17 @@ HZ_L2
 
   CUDA_CALL(cudaMemcpy2DAsync(dF, ldd * sizeof(double), hF, ldhF * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
   CUDA_CALL(cudaMemcpy2DAsync(dG, ldd * sizeof(double), hG, ldhG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
-  if (full_svd)
-    CUDA_CALL(cudaMemset2DAsync(dV, ldd * sizeof(double), 0, nrow * sizeof(double), ncol));
+  CUDA_CALL(cudaMemset2DAsync(dV, ldd * sizeof(double), 0, nrow * sizeof(double), ncol));
   initSymbols(dF, dG, dV, dS, dH, dK, cvg_dat, nrow, ncol, static_cast<unsigned>(ldd), static_cast<unsigned>(ldd), static_cast<unsigned>(ldd), swp_max[0u], alpha, beta, alpha_ptr, beta_ptr);
 
   CUDA_CALL(cudaDeviceSynchronize());
 
   timers[1] = stopwatch_lap(timers[3]);
+  
+  initV(ncol, static_cast<cudaStream_t>(NULL));
+  CUDA_CALL(cudaDeviceSynchronize());
 
-  if (full_svd) {
-    initV(ncol, static_cast<cudaStream_t>(NULL));
-    CUDA_CALL(cudaDeviceSynchronize());
-  }
-
-  void (*const HZ_L1)(const unsigned) = (full_svd ? HZ_L1_sv : HZ_L1_s);
+  void (*const HZ_L1)(const unsigned) = HZ_L1_sv;
 
   *glb_s = MkLong(0u);
   *glb_b = MkLong(0u);
@@ -217,8 +202,7 @@ HZ_L2
 
   CUDA_CALL(cudaMemcpy2DAsync(hF, ldhF * sizeof(double), dF, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
   CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
-  if (full_svd)
-    CUDA_CALL(cudaMemcpy2DAsync(hV, ldhV * sizeof(double), dV, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+  CUDA_CALL(cudaMemcpy2DAsync(hV, ldhV * sizeof(double), dV, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
   CUDA_CALL(cudaMemcpyAsync(hS, dS, ncol * sizeof(double), cudaMemcpyDeviceToHost));
   CUDA_CALL(cudaMemcpyAsync(hH, dH, ncol * sizeof(double), cudaMemcpyDeviceToHost));
   CUDA_CALL(cudaMemcpyAsync(hK, dK, ncol * sizeof(double), cudaMemcpyDeviceToHost));

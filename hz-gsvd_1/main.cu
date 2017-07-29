@@ -111,13 +111,11 @@ int main(int argc, char *argv[])
   HDF5_CALL(H5Fclose(fid));
 
   double *hV = static_cast<double*>(NULL);
-  if (routine & HZ_FULL_SVD) {
-    ldhV = ((ldhF <= ldhG) ? ldhF : ldhG);
-    ldA = static_cast<size_t>(ldhV);
-    hV = allocHostMtx<double>(ldA, n, n, true);
-    SYSP_CALL(hV);
-    ldhV = static_cast<unsigned>(ldA);
-  }
+  ldhV = ((ldhF <= ldhG) ? ldhF : ldhG);
+  ldA = static_cast<size_t>(ldhV);
+  hV = allocHostMtx<double>(ldA, n, n, true);
+  SYSP_CALL(hV);
+  ldhV = static_cast<unsigned>(ldA);
 
   double *const hS = allocHostVec<double>(n);
   SYSP_CALL(hS);
