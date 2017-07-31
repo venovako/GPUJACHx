@@ -1,6 +1,22 @@
 #ifndef DEVICE_CODE_CDSORT_HPP
 #define DEVICE_CODE_CDSORT_HPP
 
+MYDEVFN double
+dSUM_PROD_32(const double x, const double y, double &s0, double &s1)
+{
+  const double xy = __dmul_rd(x, y); // (x *_RD y)
+  const double rp = __fma_rn(x, y, -xy); // rounded-off part (always >= 0)
+  s0 = dSum32(xy);
+  s1 = dSum32(rp);
+  return (s0 + s1);
+}
+
+MYDEVFN double
+dSSQ32(const double x, double &s0, double &s1)
+{
+  return dSUM_PROD_32(x, x, s0, s1);
+}
+
 MYDEVFN unsigned dHZ_L0_s
 (
  volatile double *const F,
@@ -22,8 +38,8 @@ MYDEVFN unsigned dHZ_L0_s
   Gp_ = F32(G, x, p);
   Gq_ = F32(G, x, q);
 
-  Bpp = dSsq32(Gp_);
-  Bqq = dSsq32(Gq_);
+  Bpp = dSSQ32(Gp_, App, Aqq);
+  Bqq = dSSQ32(Gq_, App, Aqq);
 
   __syncthreads();
 
@@ -67,10 +83,10 @@ MYDEVFN unsigned dHZ_L0_s
 
       __syncthreads();
 
-      App = dSsq32(Fp);
-      Aqq = dSsq32(Fq);
-      const double Apq = dSum32(Fp * Fq);
-      const double Bpq = dSum32(Gp * Gq);
+      App = dSSQ32(Fp, Bpp, Bqq);
+      Aqq = dSSQ32(Fq, Bpp, Bqq);
+      const double Apq = dSUM_PROD_32(Fp, Fq, Bpp, Bqq);
+      const double Bpq = dSUM_PROD_32(Gp, Gq, Bpp, Bqq);
 
       const double
         App_ = __dsqrt_rn(App),
@@ -320,14 +336,14 @@ MYDEVFN unsigned dHZ_L0_s
   if (blk_transf_s) {
     // normalize V
 
-    App = dSsq32(Fp_);
-    Bpp = dSsq32(Gp_);
+    App = dSSQ32(Fp_, Aqq, Bqq);
+    Bpp = dSSQ32(Gp_, Aqq, Bqq);
     const double Vpp_ = my_drsqrt_rn(App + Bpp);
     if (Vpp_ != 1.0)
       F32(V, x, p) = Vp_ * Vpp_;
 
-    Aqq = dSsq32(Fq_);
-    Bqq = dSsq32(Gq_);
+    Aqq = dSSQ32(Fq_, App, Bpp);
+    Bqq = dSSQ32(Gq_, App, Bpp);
     const double Vqq_ = my_drsqrt_rn(Aqq + Bqq);
     if (Vqq_ != 1.0)
       F32(V, x, q) = Vq_ * Vqq_;
