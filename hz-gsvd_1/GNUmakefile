@@ -43,6 +43,13 @@ ifdef HOST_FLAGS
 NVCCFLAGS+=-Xcompiler $(HOST_FLAGS)
 endif # HOST_FLAGS
 
+ifdef ANIMATE
+NVPPFLAGS+=-DANIMATE=$(ANIMATE) -I../../../../CSD/JACSD/vn
+NVLDFLAGS+=-L../../../../CSD/JACSD -lvn -L$(HOME)/OpenBLAS/lib -lopenblas_omp
+else # !ANIMATE
+NVPPFLAGS+=-UANIMATE
+endif # ANIMATE
+
 NVPPFLAGS+=-UUSE_MULTI_THR
 NVLDFLAGS+=-l dl,m
 

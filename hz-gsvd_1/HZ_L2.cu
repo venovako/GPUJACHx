@@ -133,6 +133,18 @@ HZ_L2
   unsigned blk_swp = 0u;
 
 #ifdef ANIMATE
+#if (ANIMATE == 1)
+  vn_mtxvis_ctx *ctx = static_cast<vn_mtxvis_ctx*>(NULL);
+  if (ncol < 10000u) {
+    char fname[8] = { '\0' };
+    (void)sprintf(fname, "FG%x%04u", routine, ncol);
+    SYSI_CALL(vn_mtxvis_start(&ctx, fname, (VN_MTXVIS_OP_AtA | VN_MTXVIS_FN_Lg | VN_MTXVIS_FF_Bin), nrow, ncol, 1, 1, 7));
+    if (ctx) {
+      SYSI_CALL(vn_mtxvis_frame(ctx, hF, ldhF));
+      SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+    }
+  }
+#elif (ANIMATE == 2)
   vn_mtxvis_ctx *ctxF = static_cast<vn_mtxvis_ctx*>(NULL);
   vn_mtxvis_ctx *ctxG = static_cast<vn_mtxvis_ctx*>(NULL);
   if (ncol < 10000u) {
@@ -146,6 +158,7 @@ HZ_L2
     if (ctxG)
       SYSI_CALL(vn_mtxvis_frame(ctxG, hG, ldhG));
   }
+#endif // ?ANIMATE
 #endif // ANIMATE
 
   while (blk_swp < swp) {
@@ -155,6 +168,16 @@ HZ_L2
       HZ_L1(blk_stp);
 
 #ifdef ANIMATE
+#if (ANIMATE == 1)
+      if (ctx) {
+        CUDA_CALL(cudaDeviceSynchronize());
+        CUDA_CALL(cudaMemcpy2DAsync(hF, ldhF * sizeof(double), dF, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaDeviceSynchronize());
+        SYSI_CALL(vn_mtxvis_frame(ctx, hF, ldhF));
+        SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+      }
+#elif (ANIMATE == 2)
       if (ctxF) {
         CUDA_CALL(cudaDeviceSynchronize());
         CUDA_CALL(cudaMemcpy2DAsync(hF, ldhF * sizeof(double), dF, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
@@ -167,6 +190,7 @@ HZ_L2
         CUDA_CALL(cudaDeviceSynchronize());
         SYSI_CALL(vn_mtxvis_frame(ctxG, hG, ldhG));
       }
+#endif // ?ANIMATE
 #endif // ANIMATE
     }
 
@@ -188,10 +212,15 @@ HZ_L2
   }
 
 #ifdef ANIMATE
+#if (ANIMATE == 1)
+  if (ctx)
+    SYSI_CALL(vn_mtxvis_stop(ctx));  
+#elif (ANIMATE == 2)
   if (ctxG)
     SYSI_CALL(vn_mtxvis_stop(ctxG));
   if (ctxF)
     SYSI_CALL(vn_mtxvis_stop(ctxF));
+#endif // ?ANIMATE
 #endif // ANIMATE
 
   *glbSwp = blk_swp;
