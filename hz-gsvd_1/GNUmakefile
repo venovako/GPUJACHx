@@ -44,8 +44,8 @@ NVCCFLAGS+=-Xcompiler $(HOST_FLAGS)
 endif # HOST_FLAGS
 
 ifdef ANIMATE
-NVPPFLAGS+=-DANIMATE=$(ANIMATE) -I../../../CSD/vn
-NVLDFLAGS+=-L../../../CSD -lvn -L$(HOME)/OpenBLAS-seq/lib -lopenblas #_omp
+NVPPFLAGS+=-DANIMATE=$(ANIMATE) -DVN_INTEGER_KIND=8 -DMKL_DIRECT_CALL -I../../../CSD/vn -I${MKLROOT}/include/intel64/ilp64 -I${MKLROOT}/include
+NVLDFLAGS+=-L../../../CSD -lvn -L${MKLROOT}/lib -Xlinker -rpath,${MKLROOT}/lib -L${MKLROOT}/../compiler/lib -Xlinker -rpath,${MKLROOT}/../compiler/lib -lmkl_intel_ilp64 -lmkl_core -lmkl_intel_thread -liomp5 -lpthread
 else # !ANIMATE
 NVPPFLAGS+=-UANIMATE
 endif # ANIMATE
