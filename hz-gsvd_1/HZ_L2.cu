@@ -211,21 +211,35 @@ HZ_L2
     CUDA_CALL(cudaDeviceSynchronize());
   }
 
-#ifdef ANIMATE
-#if (ANIMATE == 1)
-  if (ctx)
-    SYSI_CALL(vn_mtxvis_stop(ctx));  
-#elif (ANIMATE == 2)
-  if (ctxG)
-    SYSI_CALL(vn_mtxvis_stop(ctxG));
-  if (ctxF)
-    SYSI_CALL(vn_mtxvis_stop(ctxF));
-#endif // ?ANIMATE
-#endif // ANIMATE
-
   *glbSwp = blk_swp;
   initS(1, ncol, static_cast<cudaStream_t>(NULL));
   CUDA_CALL(cudaDeviceSynchronize());
+
+#ifdef ANIMATE
+#if (ANIMATE == 1)
+      if (ctx) {
+        CUDA_CALL(cudaMemcpy2DAsync(hF, ldhF * sizeof(double), dF, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaDeviceSynchronize());
+        SYSI_CALL(vn_mtxvis_frame(ctx, hF, ldhF));
+        SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
+        SYSI_CALL(vn_mtxvis_stop(ctx));
+      }
+#elif (ANIMATE == 2)
+      if (ctxF) {
+        CUDA_CALL(cudaMemcpy2DAsync(hF, ldhF * sizeof(double), dF, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaDeviceSynchronize());
+        SYSI_CALL(vn_mtxvis_frame(ctxF, hF, ldhF));
+      }
+      if (ctxG) {
+        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaDeviceSynchronize());
+        SYSI_CALL(vn_mtxvis_frame(ctxG, hG, ldhG));
+        SYSI_CALL(vn_mtxvis_stop(ctxG));
+        SYSI_CALL(vn_mtxvis_stop(ctxF));
+      }
+#endif // ?ANIMATE
+#endif // ANIMATE
 
   timers[2] = stopwatch_lap(timers[3]);
 
