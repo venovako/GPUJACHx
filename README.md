@@ -97,7 +97,9 @@ The output, if requested, is stored in the same-named `group` with `G` being the
 
 ## Running
 
-Note that rowcyc/cycwor and colcyc/cycloc strategies do not support all possible input dimensions!  If they do not suffice, please use mmstep for `SNP`, else, it is expected that the fastest execution will be with cycwor.
+Note that the strategies do not support all possible input dimensions!
+Please have a look at the strategies' headers in `strat` subdirectory.
+It is expected that the fastest execution will be with cycwor.
 
 Example, for the full SVD with the block oriented variant and output in `output.h5`:
 ```bash
