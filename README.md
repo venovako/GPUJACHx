@@ -88,12 +88,12 @@ For simplicity, it is expected that `LDA=M=N`, and that all dimensions are a mul
 
 The bordering can be done in, e.g., Matlab or Scilab, as follows (`I` is an identity matrix):
 
-| N | 64-(N%64) |
-| - | --------- |
-| G |         0 |
-| 0 |         I |
+|   N | 64-(N%64) |
+| --- | --------- |
+| `G` |       `0` |
+| `0` |       `I` |
 
-The output, if requested, is stored in the same-named `group` with `G` being the matrix of the left singular vectors, `V` the matrix of the right singular vectors (non-transposed), and `D` are the eigenvalues of `trans(G)*G`, i.e., the squares of the singular values (for the "ordinary" SVD).
+The output, if requested, is stored in the same-named `group` with `G` being the matrix of the left singular vectors, `V` the matrix of the right singular vectors (non-transposed), and `D` are the eigenvalues of `trans(G)*J*G`, i.e., the squares of the singular values (for the "ordinary" SVD, with `J=I`).
 
 ## Running
 
