@@ -81,6 +81,9 @@ h5close(h5)
 ```
 In `file.h5` there will be a group named `group` created, with two datasets: `IDADIM` is an integer vector containing the dimensions of the matrix `G`, which has `M` rows and `N` columns, and is stored in *Fortran* array order (column by column), with the leading dimension `LDA`.
 
+For now, please, make sure that `group` name is in fact the number of columns of `G`.
+E.g., if the input matrix dataset has `2048` columns, the HDF5 group in which it is contained should be named `2048`.
+
 Hint: if the file is viewed with, e.g., [HDFView](https://www.hdfgroup.org/downloads/hdfview/ "A free HDF5 viewer/editor."), `G` will look as if having `N` rows and `M` columns, which is perfectly normal, since the Fortran data look transposed in C, and vice versa.
 Matlab and Scilab store and read data in the correct format for GPUJACHx.
 
