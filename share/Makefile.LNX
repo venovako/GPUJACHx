@@ -58,8 +58,8 @@ NVPPFLAGS+=-UHAVE_CUBLAS
 endif # CUBLAS
 
 ifdef MKL
-NVPPFLAGS+=-I$(MKLROOT)/include -DUSE_MKL=$(MKL)
-NVLDFLAGS+=-L$(MKLROOT)/lib/intel64 -l mkl_gf_lp64,mkl_$(MKL),mkl_core
+NVPPFLAGS+=-DUSE_MKL=$(MKL) -I$(MKLROOT)/include
+NVLDFLAGS+=-L$(MKLROOT)/lib/intel64 -l mkl_gf_ilp64,mkl_$(MKL),mkl_core
 ifeq ($(MKL),intel_thread)
 NVLDFLAGS+=-liomp5
 endif # intel_thread
