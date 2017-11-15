@@ -49,7 +49,7 @@ NVPPFLAGS=$(NVPPFLAGS) -UHAVE_CUBLAS
 !IF ("$(MKL)"!="sequential")
 !ERROR MKL is only supported without threading (sequential)
 !ELSE # sequential
-NVPPFLAGS=$(NVPPFLAGS) -I$(MKLROOT)\include -DUSE_MKL=$(MKL)
+NVPPFLAGS=$(NVPPFLAGS) -DUSE_MKL=$(MKL) -I$(MKLROOT)\include
 NVLDFLAGS=$(NVLDFLAGS) -L$(MKLROOT)\lib\intel64 -lmkl_intel_lp64_dll,mkl_sequential_dll,mkl_core_dll
 !ENDIF # !sequential
 !ELSE # !MKL
