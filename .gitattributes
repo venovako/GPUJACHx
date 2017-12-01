@@ -1,5 +1,12 @@
 *.h linguist-language=C
 *.mk linguist-language=Makefile
 Makefile.* linguist-language=Makefile
-device_code* linguist-language=Cuda
-cuda_* linguist-language=Cuda
+share/device_code* linguist-language=Cuda
+share/cuda_* linguist-language=Cuda
+strat/BrentL/* linguist-generated=true
+strat/colcyc/* linguist-generated=true
+strat/cycloc/* linguist-generated=true
+strat/cycwor/* linguist-generated=true
+strat/mmstep/* linguist-generated=true
+strat/rowcyc/* linguist-generated=true
+strat/pdf/* linguist-documentation=true
