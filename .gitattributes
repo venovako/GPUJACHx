@@ -1,0 +1,5 @@
+*.h linguist-language=C
+*.mk linguist-language=Makefile
+Makefile.* linguist-language=Makefile
+device_code* linguist-language=Cuda
+cuda_* linguist-language=Cuda
