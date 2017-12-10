@@ -7,5 +7,5 @@
 ./proc_dir-mac.sh cycwor
 rm -f strat.dylib
 rm -f strat.map
-ld *.o -dylib -macosx_version_min 10.12 -map strat.map -o strat.dylib
+ld *.o -dylib -macosx_version_min 10.13 -map strat.map -o strat.dylib
 rm -f *.o
