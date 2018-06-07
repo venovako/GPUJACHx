@@ -9,7 +9,7 @@ GPU_ARCH=sm_30
 endif # !GPU_ARCH
 
 ifndef HDF5
-HDF5=/usr/local
+HDF5=$(HOME)/hdf5
 endif # !HDF5
 
 ifndef CVG
