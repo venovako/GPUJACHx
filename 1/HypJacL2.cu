@@ -145,6 +145,9 @@ hypJacL2
     *cvg_dat = 0ul;
 
     for (unsigned blk_stp = 0u; blk_stp < STRAT1_STEPS; ++blk_stp) {
+      if (blk_stp)
+        CUDA_CALL(cudaDeviceSynchronize());
+
       if (definite)
         defJac1(blk_stp, definite);
       else
