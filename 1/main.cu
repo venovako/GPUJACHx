@@ -11,7 +11,8 @@ struct CmdArgs {
   char *exe;
   char *dev;
   char *sdy;
-  char *snp;
+  char *snp0;
+  char *snp1;
   char *alg;
   char *h5f;
   char *h5g;
@@ -21,7 +22,8 @@ struct CmdArgs {
     : exe(static_cast<char*>(NULL)),
       dev(static_cast<char*>(NULL)),
       sdy(static_cast<char*>(NULL)),
-      snp(static_cast<char*>(NULL)),
+      snp0(static_cast<char*>(NULL)),
+      snp1(static_cast<char*>(NULL)),
       alg(static_cast<char*>(NULL)),
       h5f(static_cast<char*>(NULL)),
       h5g(static_cast<char*>(NULL)),
@@ -32,19 +34,20 @@ struct CmdArgs {
     if (!argv)
       DIE("NULL argv");
 
-    if ((7 > argc) || (8 < argc)) {
-      (void)fprintf(stderr, "%s DEV SDY SNP ALG H5F H5G [H5R]\n", argv[0]);
+    if ((8 > argc) || (9 < argc)) {
+      (void)fprintf(stderr, "%s DEV SDY SNP0 SNP1 ALG H5F H5G [H5R]\n", argv[0]);
       exit(EXIT_FAILURE);
     }
 
     exe = argv[0];
     dev = argv[1];
     sdy = argv[2];
-    snp = argv[3];
-    alg = argv[4];
-    h5f = argv[5];
-    h5g = argv[6];
-    h5r = ((8 == argc) ? argv[7] : static_cast<char*>(NULL));
+    snp0 = argv[3];
+    snp1 = argv[4];
+    alg = argv[5];
+    h5f = argv[6];
+    h5g = argv[7];
+    h5r = ((9 == argc) ? argv[8] : static_cast<char*>(NULL));
   }
 };
 
@@ -60,7 +63,7 @@ int main(int argc, char *argv[])
 
   const unsigned n0 = (HYPJACL1_NCOLB << 1u);
   const unsigned n1 = (static_cast<unsigned>(atoi(ca.h5g)) + HYPJACL1_NCOLB - 1u) / HYPJACL1_NCOLB;
-  init_strats(ca.sdy, ca.snp, n0, n1);
+  init_strats(ca.sdy, ca.snp0, n0, ca.snp1, n1);
 
   const int dev = atoi(ca.dev);
 #ifndef NDEBUG
