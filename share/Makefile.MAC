@@ -23,7 +23,7 @@ HDF5_L=-L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -ffp-contract=on,-march=native,-integrated-as
+NVCCFLAGS=-std c++14 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler -ffp-contract=on,-march=native,-integrated-as
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG

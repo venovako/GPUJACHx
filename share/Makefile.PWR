@@ -29,7 +29,7 @@ THR=-pthread
 endif # gnu_thread
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-std c++11 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler $(THR)
+NVCCFLAGS=-std c++14 -arch $(GPU_ARCH) -cudart shared -restrict -Xcompiler $(THR)
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
