@@ -108,3 +108,5 @@ Example, for the full SVD with the block oriented variant and output in `output.
 ```bash
 ./x1.exe 0 ../strat/strat.dylib cycwor 9 input.h5 group output.h5
 ```
+
+This work has been supported in part by Croatian Science Foundation under the project IP--2014--09--3670.
