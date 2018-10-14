@@ -68,12 +68,16 @@ dCholesky32(volatile double *const A,
   #pragma unroll
   for (unsigned k = 0u; k < 16u; ++k) {
     // cdiv(k)
+#ifdef USE_RSQRT
+    const double Akk = (((y0 == k) && (x >= k)) ? F32(A, k, k) : 0.0);
+#else // DIV
+    const double Akk = (((y0 == k) && (x >= k)) ? __dsqrt_rn(F32(A, k, k)) : 0.0);
+#endif // USE_RSQRT
+    __syncthreads();
     if ((y0 == k) && (x >= k)) {
 #ifdef USE_RSQRT
-      const double Akk = F32(A, k, k);
       F32(A, x, k) = (x > k) ? (F32(A, x, k) * my_drsqrt_rn(Akk)) : __dsqrt_rn(Akk);
 #else // DIV
-      const double Akk = __dsqrt_rn(F32(A, k, k));
       F32(A, x, k) = (x > k) ? __ddiv_rn(F32(A, x, k), Akk) : Akk;
 #endif // USE_RSQRT
     }
@@ -105,9 +109,18 @@ dCholesky32(volatile double *const A,
   #pragma unroll
   for (unsigned k = 16u; k < 32u; ++k) {
     // cdiv(k)
+#ifdef USE_RSQRT
+    const double Akk = (((y1 == k) && (x >= k)) ? F32(A, k, k) : 0.0);
+#else // DIV
+    const double Akk = (((y1 == k) && (x >= k)) ? __dsqrt_rn(F32(A, k, k)) : 0.0);
+#endif // USE_RSQRT
+    __syncthreads();
     if ((y1 == k) && (x >= k)) {
-      const double Akk = __dsqrt_rn(F32(A, k, k));
+#ifdef USE_RSQRT
+      F32(A, x, k) = (x > k) ? (F32(A, x, k) * my_drsqrt_rn(Akk)) : __dsqrt_rn(Akk);
+#else // DIV
       F32(A, x, k) = (x > k) ? __ddiv_rn(F32(A, x, k), Akk) : Akk;
+#endif // USE_RSQRT
     }
     __syncthreads();
 
