@@ -172,7 +172,8 @@ hypJacL2
     const unsigned cvg_b = static_cast<unsigned>(cvg >> 32u);
     *glb_b += cvg_b;
     const double tim_s = stopwatch_lap(swp_tim) * TS2S;
-    (void)printf("BLK_SWP(%2u), ROT_S(%10u), ROT_B(%10u), TIME(%#12.6f s)\n", blk_swp, cvg_s, cvg_b, tim_s);
+    (void)fprintf(stdout, "BLK_SWP(%2u), ROT_S(%10u), ROT_B(%10u), TIME(%#12.6f s)\n", blk_swp, cvg_s, cvg_b, tim_s);
+    (void)fflush(stdout);
     if (!cvg_b)
       break;
   }
