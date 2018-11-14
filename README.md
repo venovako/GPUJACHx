@@ -36,16 +36,17 @@ Prerequisites for the test program:
 
 Test run:
 ```bash
-./x1.exe DEV SDY SNP ALG H5F H5G [H5R]
+./x1.exe DEV SDY SNP0 SNP1 ALG H5F H5G [H5R]
 ```
 where
-* DEV = CUDA device number
-* SDY = path to strat.so (Linux), or strat.dll (Windows), or strat.dylib (MacOS)
-* SNP = BrentL or rowcyc or colcyc or cycwor or cycloc or mmstep strategy
-* ALG = algorithm number (see 1/HypJacL2.hpp)
-* H5F = input HDF5 file (see main.cu)
-* H5G = input/output HDF5 group
-* H5R = optional output HDF5 file
+* DEV  = CUDA device number
+* SDY  = path to strat.so (Linux), or strat.dll (Windows), or strat.dylib (MacOS)
+* SNP0 = BrentL or rowcyc or colcyc or cycwor or cycloc or mmstep strategy
+* SNP1 = BrentL or rowcyc or colcyc or cycwor or cycloc or mmstep strategy
+* ALG  = algorithm number (see 1/HypJacL2.hpp)
+* H5F  = input HDF5 file (see main.cu)
+* H5G  = input/output HDF5 group
+* H5R  = optional output HDF5 file
 
 ## Input file format
 
@@ -106,7 +107,7 @@ It is expected that the fastest execution will be with cycwor.
 
 Example, for the full SVD with the block oriented variant and output in `output.h5`:
 ```bash
-./x1.exe 0 ../strat/strat.dylib cycwor 9 input.h5 group output.h5
+./x1.exe 0 ../strat/strat.dylib cycwor cycwor 9 input.h5 group output.h5
 ```
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670.
