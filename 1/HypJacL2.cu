@@ -89,30 +89,28 @@ hypJacL2
     *alpha_ptr = static_cast<double*>(NULL),
     *beta_ptr = static_cast<double*>(NULL);
 
-  size_t ldd = static_cast<size_t>(nrow);
-  double *ptr = allocDeviceMtx<double>(ldd, static_cast<size_t>(nrow), size_t((full_svd ? (2u * ncol) : ncol) + 1u), true);
-  double *const dG = ptr;
-  ptr += ldd * ncol;
-  double *const dV = (full_svd ? ptr : static_cast<double*>(NULL));
-  if (full_svd)
-    ptr += ldd * ncol;
-  double *const dD = ptr;
-  ptr = dG;
+  size_t lddG = static_cast<size_t>(nrow);
+  double *const dG = allocDeviceMtx<double>(lddG, static_cast<size_t>(nrow), static_cast<size_t>(ncol), true);
+
+  size_t lddV = static_cast<size_t>(full_svd ? ncol : 0u);
+  double *const dV = (full_svd ? allocDeviceMtx<double>(lddV, static_cast<size_t>(ncol), static_cast<size_t>(ncol), true) : static_cast<double*>(NULL));
+
+  double *const dD = allocDeviceVec(static_cast<size_t>(ncol));
 
   volatile unsigned Long *cvg_dat = static_cast<volatile unsigned Long*>(NULL);
   CUDA_CALL(cudaHostAlloc((void**)&cvg_dat, sizeof(unsigned Long), cudaHostAllocPortable | cudaHostAllocMapped));
 
-  CUDA_CALL(cudaMemcpy2DAsync(dG, ldd * sizeof(double), hG, ldhG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
+  CUDA_CALL(cudaMemcpy2DAsync(dG, lddG * sizeof(double), hG, ldhG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
   if (full_svd)
-    CUDA_CALL(cudaMemset2DAsync(dV, ldd * sizeof(double), 0, nrow * sizeof(double), ncol));
-  initSymbols(dG, dV, cvg_dat, nrow, static_cast<unsigned>(ldd), static_cast<unsigned>(ldd), swp_max[0u], alpha, beta, alpha_ptr, beta_ptr);
+    CUDA_CALL(cudaMemset2DAsync(dV, lddV * sizeof(double), 0, ncol * sizeof(double), ncol));
+  initSymbols(dG, dV, cvg_dat, nrow, ncol, static_cast<unsigned>(lddG), static_cast<unsigned>(lddV), swp_max[0u], alpha, beta, alpha_ptr, beta_ptr);
 
   CUDA_CALL(cudaDeviceSynchronize());
 
   timers[1] = stopwatch_lap(timers[3]);
 
   if (full_svd) {
-    initV(dV, 0u, ncol, static_cast<unsigned>(ldd), static_cast<cudaStream_t>(NULL));
+    initV(dV, 0u, ncol, static_cast<unsigned>(lddV), static_cast<cudaStream_t>(NULL));
     CUDA_CALL(cudaDeviceSynchronize());
   }
 
@@ -156,7 +154,7 @@ hypJacL2
 #ifdef ANIMATE
       if (ctx) {
         CUDA_CALL(cudaDeviceSynchronize());
-        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, lddG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
         CUDA_CALL(cudaDeviceSynchronize());
         SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
       }
@@ -184,19 +182,22 @@ hypJacL2
 #endif // ANIMATE
 
   *glbSwp = blk_swp;
-  initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(ldd), static_cast<cudaStream_t>(NULL));
+  initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(lddG), static_cast<cudaStream_t>(NULL));
   CUDA_CALL(cudaDeviceSynchronize());
 
   timers[2] = stopwatch_lap(timers[3]);
 
-  CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+  CUDA_CALL(cudaMemcpy2DAsync(hG, ldhG * sizeof(double), dG, lddG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
   if (full_svd)
-    CUDA_CALL(cudaMemcpy2DAsync(hV, ldhV * sizeof(double), dV, ldd * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyDeviceToHost));
+    CUDA_CALL(cudaMemcpy2DAsync(hV, ldhV * sizeof(double), dV, lddV * sizeof(double), ncol * sizeof(double), ncol, cudaMemcpyDeviceToHost));
   CUDA_CALL(cudaMemcpyAsync(hD, dD, ncol * sizeof(double), cudaMemcpyDeviceToHost));
 
   CUDA_CALL(cudaDeviceSynchronize());
   CUDA_CALL(cudaFreeHost((void*)cvg_dat));
-  CUDA_CALL(cudaFree(static_cast<void*>(ptr)));
+  CUDA_CALL(cudaFree(static_cast<void*>(dD)));
+  if (dV)
+    CUDA_CALL(cudaFree(static_cast<void*>(dV)));
+  CUDA_CALL(cudaFree(static_cast<void*>(dG)));
 
   timers[3] = stopwatch_lap(timers[3]);
   timers[0] = stopwatch_lap(timers[0]);

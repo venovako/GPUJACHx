@@ -8,7 +8,7 @@ __constant__
 volatile unsigned Long *_cvg;
 
 __constant__
-unsigned _nRow, _ldG, _ldV, _nSwp;
+unsigned _nRow, _nCol, _ldG, _ldV, _nSwp;
 
 __constant__
 unsigned _STRAT0_STEPS, _STRAT0_PAIRS;
