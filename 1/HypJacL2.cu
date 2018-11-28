@@ -95,7 +95,7 @@ hypJacL2
   size_t lddV = static_cast<size_t>(full_svd ? ncol : 0u);
   double *const dV = (full_svd ? allocDeviceMtx<double>(lddV, static_cast<size_t>(ncol), static_cast<size_t>(ncol), true) : static_cast<double*>(NULL));
 
-  double *const dD = allocDeviceVec(static_cast<size_t>(ncol));
+  double *const dD = allocDeviceVec<double>(static_cast<size_t>(ncol));
 
   volatile unsigned Long *cvg_dat = static_cast<volatile unsigned Long*>(NULL);
   CUDA_CALL(cudaHostAlloc((void**)&cvg_dat, sizeof(unsigned Long), cudaHostAllocPortable | cudaHostAllocMapped));
