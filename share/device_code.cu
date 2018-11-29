@@ -193,11 +193,7 @@ void initSymbols
  const unsigned nCol,
  const unsigned ldG,
  const unsigned ldV,
- const unsigned nSwp,
- const double alpha,
- const double beta,
- const double* &alpha_ptr,
- const double* &beta_ptr
+ const unsigned nSwp
 ) throw()
 {
   CUDA_CALL(cudaMemcpyToSymbolAsync(_G, &G, sizeof(double*)));
@@ -210,12 +206,7 @@ void initSymbols
   CUDA_CALL(cudaMemcpyToSymbolAsync(_nSwp, &nSwp, sizeof(unsigned)));
   CUDA_CALL(cudaMemcpyToSymbolAsync(_STRAT0_STEPS, &STRAT0_STEPS, sizeof(unsigned)));
   CUDA_CALL(cudaMemcpyToSymbolAsync(_STRAT0_PAIRS, &STRAT0_PAIRS, sizeof(unsigned)));
-  CUDA_CALL(cudaMemcpyToSymbolAsync(_alpha, &alpha, sizeof(double)));
-  CUDA_CALL(cudaMemcpyToSymbolAsync(_beta, &beta, sizeof(double)));
   // copy strategy tables
   CUDA_CALL(cudaMemcpyToSymbolAsync(_strat0, strat0, sizeof(strat0)));
   CUDA_CALL(cudaMemcpyToSymbolAsync(_strat1, strat1, sizeof(strat1)));
-  // get symbol addresses
-  CUDA_CALL(cudaGetSymbolAddress((void**)&alpha_ptr, _alpha));
-  CUDA_CALL(cudaGetSymbolAddress((void**)&beta_ptr, _beta));
 }

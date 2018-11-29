@@ -13,9 +13,6 @@ unsigned _nRow, _nCol, _ldG, _ldV, _nSwp;
 __constant__
 unsigned _STRAT0_STEPS, _STRAT0_PAIRS;
 
-__constant__
-double _alpha, _beta;
-
 STRAT0_STORAGE
 unsigned STRAT0_DTYPE _strat0[STRAT0_MAX_STEPS][STRAT0_MAX_PAIRS][2u];
 

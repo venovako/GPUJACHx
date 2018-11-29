@@ -82,13 +82,6 @@ hypJacL2
   const unsigned
     swp_max[HYPJAC_MAX_LEVELS] = { (blk_ori ? 1u : HYPJAC_NSWEEP), HYPJAC_NSWEEP };
 
-  const double
-    alpha = +1.0,
-    beta = +0.0;
-  const double
-    *alpha_ptr = static_cast<double*>(NULL),
-    *beta_ptr = static_cast<double*>(NULL);
-
   size_t lddG = static_cast<size_t>(nrow);
   double *const dG = allocDeviceMtx<double>(lddG, static_cast<size_t>(nrow), static_cast<size_t>(ncol), true);
 
@@ -103,7 +96,7 @@ hypJacL2
   CUDA_CALL(cudaMemcpy2DAsync(dG, lddG * sizeof(double), hG, ldhG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
   if (full_svd)
     CUDA_CALL(cudaMemset2DAsync(dV, lddV * sizeof(double), 0, ncol * sizeof(double), ncol));
-  initSymbols(dG, dV, cvg_dat, nrow, ncol, static_cast<unsigned>(lddG), static_cast<unsigned>(lddV), swp_max[0u], alpha, beta, alpha_ptr, beta_ptr);
+  initSymbols(dG, dV, cvg_dat, nrow, ncol, static_cast<unsigned>(lddG), static_cast<unsigned>(lddV), swp_max[0u]);
 
   CUDA_CALL(cudaDeviceSynchronize());
 
