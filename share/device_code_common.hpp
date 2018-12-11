@@ -210,8 +210,7 @@ MYKERN dInitD
 
   const unsigned cix = blockIdx.x * wpb + wid;
   if (cix < nRank) {
-    unsigned lid;
-    asm ("mov.u32 %0, %%laneid;" : "=r"(lid));
+    const unsigned lid = static_cast<unsigned>(threadIdx.x) & WARP_SZ_SUB1;
     double *const bGi = G + (cix * ldG + lid);
     const double *const eGi = G + (cix * ldG + nRow);
     double x = +0.0, y;

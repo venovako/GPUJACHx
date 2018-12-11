@@ -140,10 +140,10 @@ MYDEVFN unsigned dDefJacL0posd
       unsigned Long blk_transf = blk_transf_V;
       blk_transf <<= 32u;
       blk_transf |= blk_transf_G;
-      asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
+      atomicAdd((unsigned long long*)_cvg, blk_transf);
     }
     else if (blk_transf_G)
-      asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
+      atomicAdd((unsigned*)_cvg, blk_transf_G);
   }
 
   return blk_transf_G;
@@ -288,10 +288,10 @@ MYDEVFN unsigned dDefJacL0negd
       unsigned Long blk_transf = blk_transf_V;
       blk_transf <<= 32u;
       blk_transf |= blk_transf_G;
-      asm volatile ("red.global.add.u64 [%0], %1;" :: "l"(_cvg), "l"(blk_transf) : "memory");
+      atomicAdd((unsigned long long*)_cvg, blk_transf);
     }
     else if (blk_transf_G)
-      asm volatile ("red.global.add.u32 [%0], %1;" :: "l"(_cvg), "r"(blk_transf_G) : "memory");
+      atomicAdd((unsigned*)_cvg, blk_transf_G);
   }
 
   return blk_transf_G;
