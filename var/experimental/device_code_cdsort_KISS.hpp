@@ -146,6 +146,7 @@ MYDEVFN unsigned dDefJacL0posd
       atomicAdd((unsigned*)_cvg, blk_transf_G);
   }
 
+  __syncthreads();
   return blk_transf_G;
 }
 
@@ -294,6 +295,7 @@ MYDEVFN unsigned dDefJacL0negd
       atomicAdd((unsigned*)_cvg, blk_transf_G);
   }
 
+  __syncthreads();
   return blk_transf_G;
 }
 

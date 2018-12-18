@@ -176,6 +176,7 @@ MYDEVFN unsigned dHypJacL0s
       atomicAdd((unsigned*)_cvg, blk_transf_s);
   }
 
+  __syncthreads();
   return blk_transf_s;
 }
 
