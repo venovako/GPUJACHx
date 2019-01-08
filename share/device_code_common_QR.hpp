@@ -2,13 +2,11 @@
 #define DEVICE_CODE_COMMON_QR_HPP
 
 MYDEVFN void dPeelOff
-(
- volatile double *const R0,
+(volatile double *const R0,
  volatile double *const R1,
  const unsigned x,
  const unsigned y0,
- const unsigned y1
-)
+ const unsigned y1)
 {
   #pragma unroll
   for (unsigned k = 0u; k < 32u; ++k) {
@@ -68,15 +66,13 @@ MYDEVFN void dPeelOff
 }
 
 MYDEVFN void dFactorize
-(
- const double *const G0,
+(const double *const G0,
  const double *const G1,
  volatile double *const A,
  volatile double *const V,
  const unsigned x,
  const unsigned y0,
- const unsigned y1
-)
+ const unsigned y1)
 {
   F32(A, x, y0) = G0[x];
   F32(A, x, y1) = G1[x];

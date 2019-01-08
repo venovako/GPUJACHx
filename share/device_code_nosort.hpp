@@ -2,12 +2,10 @@
 #define DEVICE_CODE_NOSORT_HPP
 
 MYDEVFN unsigned dDefJacL0
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
  const unsigned x,
- const unsigned y
-)
+ const unsigned y)
 {
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
@@ -116,13 +114,11 @@ MYDEVFN unsigned dDefJacL0
 }
 
 MYDEVFN unsigned dHypJacL0
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
  const unsigned x,
  const unsigned y,
- const unsigned npos
-)
+ const unsigned npos)
 {
 #if __CUDA_ARCH__ >= 300
 #else // Fermi

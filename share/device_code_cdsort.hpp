@@ -8,13 +8,11 @@
 #endif // USE_DRMAC
 
 MYDEVFN unsigned dDefJacL0s
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
  const unsigned x,
  const unsigned y,
- const int definite
-)
+ const int definite)
 {
 #if __CUDA_ARCH__ >= 300
   return ((definite >= 0) ? dDefJacL0posd(G, V, x, y) : dDefJacL0negd(G, V, x, y));
@@ -28,13 +26,11 @@ MYDEVFN unsigned dDefJacL0s
 // TODO: implement the new convergence criterion for the hyperbolic codes as well.
 // TODO: implement DRMAC version of dHypJacL0s, and move this one to KISS.
 MYDEVFN unsigned dHypJacL0s
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
  const unsigned x,
  const unsigned y,
- const unsigned npos
-)
+ const unsigned npos)
 {
 #if __CUDA_ARCH__ >= 300
 #else // Fermi

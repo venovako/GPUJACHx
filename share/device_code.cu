@@ -115,8 +115,7 @@ void hypJacL1sv(const unsigned step, const unsigned npos) throw()
 }
 
 void initD
-(
- double *const G,
+(double *const G,
  double *const D,
  const unsigned ifc,
  const unsigned nRow,
@@ -158,8 +157,7 @@ void initD
 }
 
 void initV
-(
- double *const V,
+(double *const V,
  const unsigned ifc,
  const unsigned nRank,
  const unsigned ldV,
@@ -185,8 +183,7 @@ void initV
 }
 
 void initSymbols
-(
- double *const G,
+(double *const G,
  double *const V,
  volatile unsigned Long *const cvg,
  const unsigned nRow,

@@ -2,16 +2,14 @@
 #define DEVICE_CODE_CDSORT_KISS_HPP
 
 MYDEVFN unsigned dDefJacL0posd
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
 #endif // __CUDA_ARCH__
  const unsigned x,
- const unsigned y
-)
+ const unsigned y)
 {
   unsigned
     blk_transf_s = 0u,
@@ -139,16 +137,14 @@ MYDEVFN unsigned dDefJacL0posd
 }
 
 MYDEVFN unsigned dDefJacL0negd
-(
- volatile double *const G,
+(volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
 #endif // __CUDA_ARCH__
  const unsigned x,
- const unsigned y
-)
+ const unsigned y)
 {
   unsigned
     blk_transf_s = 0u,

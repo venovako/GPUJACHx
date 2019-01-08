@@ -117,15 +117,12 @@ dRotH(const double Apq, const double Dp, const double Dq, double &c, double &t)
 // [  C S ] [ F ] = [ R ]
 // [ -S C ] [ G ]   [ 0 ]
 // R >= 0
-MYDEVFN void
-dGivens
-(
- const double f,
+MYDEVFN void dGivens
+(const double f,
  const double g,
  double &c,
  double &s,
- double &r
-)
+ double &r)
 {
   const double f_ = fabs(f);
   const double g_ = fabs(g);

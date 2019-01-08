@@ -12,8 +12,7 @@
 
 int // 0 if OK, < 0 if invalid argument, > 0 if error
 hypJacL2
-(
- const unsigned routine,     // IN, routine ID, <= 15, (B_FS)_2
+(const unsigned routine,     // IN, routine ID, <= 15, (B_FS)_2
  // B: block-oriented or full-block,
  // F: full (U \Sigma V^T) or partial (U \Sigma) SVD,
  // S: innermost (32x32 blocks) sorting of eigenvalues.

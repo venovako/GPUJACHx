@@ -323,14 +323,11 @@ dCOSA(const double Ap, const double Aq, const double x, const double y)
     dCOSA_(Aq, Ap, y, x);
 }
 
-MYDEVFN void
-dQR32
-(
- volatile double *const A,
+MYDEVFN void dQR32
+(volatile double *const A,
  const unsigned x,
  const unsigned y0,
- const unsigned y1
-)
+ const unsigned y1)
 {
   #pragma unroll
   for (unsigned k = 0u; k < 31u; ++k) {

@@ -1,14 +1,14 @@
 #ifndef DEVICE_CODE_COMMON_CHOLESKY_HPP
 #define DEVICE_CODE_COMMON_CHOLESKY_HPP
 
-MYDEVFN void
-dGtG(const double *const G0,
-     const double *const G1,
-     volatile double *const A,
-     volatile double *const V,
-     const unsigned x,
-     const unsigned y0,
-     const unsigned y1)
+MYDEVFN void dGtG
+(const double *const G0,
+ const double *const G1,
+ volatile double *const A,
+ volatile double *const V,
+ const unsigned x,
+ const unsigned y0,
+ const unsigned y1)
 {
   double
     y0x = +0.0,
@@ -55,11 +55,11 @@ dGtG(const double *const G0,
   __syncthreads();
 }
 
-MYDEVFN void
-dCholesky32(volatile double *const A,
-            const unsigned x,
-            const unsigned y0,
-            const unsigned y1)
+MYDEVFN void dCholesky32
+(volatile double *const A,
+ const unsigned x,
+ const unsigned y0,
+ const unsigned y1)
 {
   //      [ L ? ? ]
   // A -> [ L L ? ]
@@ -158,15 +158,13 @@ dCholesky32(volatile double *const A,
 }
 
 MYDEVFN void dFactorize
-(
- const double *const G0,
+(const double *const G0,
  const double *const G1,
  volatile double *const A,
  volatile double *const V,
  const unsigned x,
  const unsigned y0,
- const unsigned y1
-)
+ const unsigned y1)
 {
   dGtG(G0, G1, A, V, x, y0, y1);
   dCholesky32(A, x, y0, y1);

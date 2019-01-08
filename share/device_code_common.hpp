@@ -148,15 +148,13 @@ my_drsqrt_rn(double a)
 #endif // USE_QR
 
 MYDEVFN void dMultAV
-(
- double *const A0,
+(double *const A0,
  double *const A1,
  volatile double *const A,
- const double *const B,
+ volatile const double *const B,
  const unsigned x,
  const unsigned y0,
- const unsigned y1
-)
+ const unsigned y1)
 {
   // Cannon-like A*B
   for (unsigned i = x; i < _nRow; i += 32u) {
@@ -190,15 +188,13 @@ MYDEVFN void dMultAV
 }
 
 MYKERN dInitD
-(
- double *const G,
+(double *const G,
  double *const D,
  const unsigned ifc,
  const unsigned nRow,
  const unsigned nRank,
  const unsigned nPlus,
- const unsigned ldG
-)
+ const unsigned ldG)
 {
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
@@ -221,7 +217,7 @@ MYKERN dInitD
 #if __CUDA_ARCH__ >= 300
     y = dSum32(x);
 #else // Fermi
-    double *const shPtr = shPool + wid * WARP_SZ;
+    volatile double *const shPtr = (volatile double*)(shPool + wid * WARP_SZ);
     y = dSum32(x, shPtr, lid);
 #endif // __CUDA_ARCH__
     x = __dsqrt_rn(y);
@@ -233,12 +229,10 @@ MYKERN dInitD
 }
 
 MYKERN dInitV
-(
- double *const V,
+(double *const V,
  const unsigned ifc,
  const unsigned nRank,
- const unsigned ldV
-)
+ const unsigned ldV)
 {
   const unsigned cix = blockIdx.x * blockDim.x + threadIdx.x;
   if (cix < nRank)

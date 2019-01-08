@@ -21,8 +21,10 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
     *const G0 = _G + ix * _ldG,
     *const G1 = _G + jx * _ldG,
     *const V0 = _V + ix * _ldV,
-    *const V1 = _V + jx * _ldV,
-    *const G = shMem,
+    *const V1 = _V + jx * _ldV;
+  volatile double
+    *const G = shMem;
+  volatile double
     *const V = shMem + 1024u;
 
   dFactorize(G0, G1, G, V, x, y0, y1);
@@ -77,8 +79,10 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
     *const G0 = _G + ix * _ldG,
     *const G1 = _G + jx * _ldG,
     *const V0 = _V + ix * _ldV,
-    *const V1 = _V + jx * _ldV,
-    *const G = shMem,
+    *const V1 = _V + jx * _ldV;
+  volatile double
+    *const G = shMem;
+  volatile double
     *const V = shMem + 1024u;
 
   dFactorize(G0, G1, G, V, x, y0, y1);

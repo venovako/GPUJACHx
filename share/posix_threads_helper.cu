@@ -90,8 +90,7 @@ static void* threadStarter(ThreadAttrs *tha) throw()
 }
 
 void createThread
-(
- pthread_t &tid,
+(pthread_t &tid,
  const PThreadFn tfn,
  void *const arg,
  const int tix,
