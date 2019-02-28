@@ -27,7 +27,7 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
 
   dFactorize(G0, G1, G, V, x, y0, y1);
   if (dDefJacL0(G, V, x, y0))
-    dMultAV(G0, G1, G, V, x, y0, y1);
+    dMultAV(G0, G1, G, V, x, y0, y1, _nRow);
 }
 
 MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER_SM)
@@ -83,7 +83,7 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
 
   dFactorize(G0, G1, G, V, x, y0, y1);
   if (definite ? dDefJacL0(G, V, x, y0) : dHypJacL0(G, V, x, y0, npos))
-    dMultAV(G0, G1, G, V, x, y0, y1);
+    dMultAV(G0, G1, G, V, x, y0, y1, _nRow);
 }
 
 #endif // !DEVICE_CODE_NOSORT_SOLVEV_HPP

@@ -101,16 +101,16 @@ cA(T *const A, const unsigned c, const unsigned ldA) throw()
 
 #ifndef TS_S
 #ifdef _WIN32
-#define TS_S MkLong(10000000)
+#define TS_S 10000000ll
 #else // POSIX
-#define TS_S MkLong(1000000)
+#define TS_S 1000000ll
 #endif // _WIN32
 #else // TS_S
 #error TS_S not definable externally
 #endif // !TS_S
 
-extern Long timestamp() throw();
-extern void stopwatch_reset(Long &sw) throw();
-extern Long stopwatch_lap(Long &sw) throw();
+extern long long timestamp() throw();
+extern void stopwatch_reset(long long &sw) throw();
+extern long long stopwatch_lap(long long &sw) throw();
 
 #endif // !MY_UTILS_HPP

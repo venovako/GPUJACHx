@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
   double *hV;
   unsigned ldhV;
   if (routine & HYPJAC_FULL_SVD) {
-    hV = allocHostMtx<double>(ldA, m, n, true);
+    hV = allocHostMtx<double>(ldA, n, n, true);
     SYSP_CALL(hV);
     ldhV = static_cast<unsigned>(ldA);
   }
@@ -88,14 +88,14 @@ int main(int argc, char *argv[])
   SYSP_CALL(hD);
 
   unsigned glbSwp = 0u;
-  unsigned Long glb_s = MkLong(0u), glb_b = MkLong(0u);
+  unsigned long long glb_s = 0ull, glb_b = 0ull;
   double timing[4] = { -0.0, -0.0, -0.0, -0.0 };
   int ret = hypJacL2(routine, nrow, ncol, nplus, hG, ldhG, hV, ldhV, hD, &glbSwp, &glb_s, &glb_b, timing);
 
   if (ret)
     (void)fprintf(stderr, "%s: error %d\n", ca_exe, ret);
   else {
-    (void)fprintf(stdout, "GLB_ROT_S(%20" FmtLong "u), GLB_ROT_B(%20" FmtLong "u)\n", glb_s, glb_b);
+    (void)fprintf(stdout, "GLB_ROT_S(%20llu), GLB_ROT_B(%20llu)\n", glb_s, glb_b);
     (void)fflush(stdout);
     (void)fprintf(stdout, "%#12.6f s %2u sweeps\n", *timing, glbSwp);
     (void)fflush(stdout);

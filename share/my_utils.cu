@@ -1,7 +1,7 @@
 #include "my_utils.hpp"
 
 #ifdef _WIN32
-EXTERN_C void __stdcall GetSystemTimePreciseAsFileTime(Long*);
+EXTERN_C void __stdcall GetSystemTimePreciseAsFileTime(long long*);
 EXTERN_C void* __stdcall LoadLibraryA(const char*);
 EXTERN_C void* __stdcall GetProcAddress(void*, const char*);
 EXTERN_C int __stdcall FreeLibrary(void*);
@@ -60,10 +60,10 @@ const void *strat_ptr(void *const h, const char *const snp, const unsigned n) th
   );
 }
 
-Long timestamp() throw()
+long long timestamp() throw()
 {
 #ifdef _WIN32
-  Long ret;
+  long long ret;
   GetSystemTimePreciseAsFileTime(&ret);
   return ret;
 #else // POSIX
@@ -73,14 +73,14 @@ Long timestamp() throw()
 #endif // _WIN32
 }
 
-void stopwatch_reset(Long &sw) throw()
+void stopwatch_reset(long long &sw) throw()
 {
   sw = timestamp();
 }
 
-Long stopwatch_lap(Long &sw) throw()
+long long stopwatch_lap(long long &sw) throw()
 {
-  const Long
+  const long long
     ts = timestamp(),
     lap = ts - sw;
   sw = ts;

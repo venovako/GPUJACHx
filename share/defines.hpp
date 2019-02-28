@@ -135,36 +135,6 @@
 #define TLS
 #endif // USE_MULTI_GPU
 
-#ifdef Long
-#error Long not definable externally
-#endif // Long
-#ifdef Ldiv
-#error Ldiv not definable externally
-#endif // Ldiv
-#ifdef Ldiv_t
-#error Ldiv_t not definable externally
-#endif // Ldiv_t
-#ifdef FmtLong
-#error FmtLong not definable externally
-#endif // FmtLong
-#ifdef MkLong
-#error MkLong not definable externally
-#endif // MkLong
-
-#ifdef _WIN32
-#define Long long long
-#define Ldiv lldiv
-#define Ldiv_t lldiv_t
-#define FmtLong "ll"
-#define MkLong(x) x ## ll
-#else // POSIX
-#define Long long
-#define Ldiv ldiv
-#define Ldiv_t ldiv_t
-#define FmtLong "l"
-#define MkLong(x) x ## l
-#endif // _WIN32
-
 #ifdef VAR_UNUSED
 #error VAR_UNUSED not definable externally
 #endif // VAR_UNUSED

@@ -39,7 +39,7 @@ struct ThreadAttrs
   void *arg;
   int pix;
   int tix;
-  unsigned Long aff;
+  unsigned long long aff;
 };
 
 static void* threadStarter(ThreadAttrs *tha) throw()
@@ -56,7 +56,7 @@ static void* threadStarter(ThreadAttrs *tha) throw()
 
   getThreadAffinity(setsrc);
   if (tha->aff) {
-    if (*static_cast<unsigned Long*>(memcpy(&setdst, &setsrc, sizeof(cpu_set_t))) &= tha->aff)
+    if (*static_cast<unsigned long long*>(memcpy(&setdst, &setsrc, sizeof(cpu_set_t))) &= tha->aff)
       setThreadAffinity(setdst);
     else {
       (void)snprintf(err_msg, err_msg_size, "Affinity mask empty for thread %d", threadVars.tix);
@@ -94,7 +94,7 @@ void createThread
  const PThreadFn tfn,
  void *const arg,
  const int tix,
- const unsigned Long aff
+ const unsigned long long aff
 ) throw()
 {
   if (!tfn)

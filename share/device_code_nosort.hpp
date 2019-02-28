@@ -100,7 +100,7 @@ MYDEVFN unsigned dDefJacL0
 
   if (!y && !x && blk_transf_s) {
     if (blk_transf_b) {
-      unsigned Long blk_transf = blk_transf_b;
+      unsigned long long blk_transf = blk_transf_b;
       blk_transf <<= 32u;
       blk_transf |= blk_transf_s;
       atomicAdd((unsigned long long*)_cvg, blk_transf);
@@ -222,7 +222,7 @@ MYDEVFN unsigned dHypJacL0
 
   if (!y && !x && blk_transf_s) {
     if (blk_transf_b) {
-      unsigned Long blk_transf = blk_transf_b;
+      unsigned long long blk_transf = blk_transf_b;
       blk_transf <<= 32u;
       blk_transf |= blk_transf_s;
       atomicAdd((unsigned long long*)_cvg, blk_transf);

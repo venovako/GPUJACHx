@@ -154,10 +154,11 @@ MYDEVFN void dMultAV
  volatile const double *const B,
  const unsigned x,
  const unsigned y0,
- const unsigned y1)
+ const unsigned y1,
+ const unsigned m)
 {
   // Cannon-like A*B
-  for (unsigned i = x; i < _nRow; i += 32u) {
+  for (unsigned i = x; i < m; i += 32u) {
     F32(A, x, y0) = A0[i];
     F32(A, x, y1) = A1[i];
     __syncthreads();

@@ -5,7 +5,7 @@ __constant__
 double *_G, *_V;
 
 __constant__
-volatile unsigned Long *_cvg;
+volatile unsigned long long *_cvg;
 
 __constant__
 unsigned _nRow, _nCol, _ldG, _ldV, _nSwp;

@@ -28,8 +28,8 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
     *const V = shMem + 1024u;
 
   dFactorize(G0, G1, G, V, x, y0, y1);
-  if (dDefJacL0s(G, V, x, y0, definite))
-    dMultV(G0, G1, V0, V1, G, V, x, y0, y1);
+  (void)dDefJacL0s(G, V, x, y0, definite);
+  dMultV(G0, G1, V0, V1, G, V, x, y0, y1);
 }
 
 MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER_SM)
@@ -86,8 +86,11 @@ MYKERN __launch_bounds__(HYPJACL1_MAX_THREADS_PER_BLOCK, HYPJACL1_MIN_BLOCKS_PER
     *const V = shMem + 1024u;
 
   dFactorize(G0, G1, G, V, x, y0, y1);
-  if (definite ? dDefJacL0s(G, V, x, y0, definite) : dHypJacL0s(G, V, x, y0, npos))
-    dMultV(G0, G1, V0, V1, G, V, x, y0, y1);
+  if (definite)
+    (void)dDefJacL0s(G, V, x, y0, definite);
+  else
+    (void)dHypJacL0s(G, V, x, y0, npos);
+  dMultV(G0, G1, V0, V1, G, V, x, y0, y1);
 }
 
 #endif // !DEVICE_CODE_CDSORT_ACCUMV_HPP

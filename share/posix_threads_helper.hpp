@@ -18,7 +18,7 @@ extern void setProcessAffinity(const cpu_set_t &cpuset) throw();
 extern void getThreadAffinity(cpu_set_t &cpuset) throw();
 extern void setThreadAffinity(const cpu_set_t &cpuset) throw();
 
-extern void createThread(pthread_t &tid, const PThreadFn tfn, void *const arg, const int tix, const unsigned Long aff) throw();
+extern void createThread(pthread_t &tid, const PThreadFn tfn, void *const arg, const int tix, const unsigned long long aff) throw();
 
 #ifndef MAIN_THREAD
 #define MAIN_THREAD -1

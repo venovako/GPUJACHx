@@ -27,13 +27,13 @@ hypJacL2
  const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= nrow
  double *const hD,           // OUT, eigenvalues of G J G^T, optionally sorted in descending order
  unsigned *const glbSwp,     // OUT, number of sweeps at the outermost level
- unsigned Long *const glb_s, // OUT, number of rotations
- unsigned Long *const glb_b, // OUT, number of ``big'' rotations
+ unsigned long long *const glb_s, // OUT, number of rotations
+ unsigned long long *const glb_b, // OUT, number of ``big'' rotations
  double *const timing        // OUT, optional, in seconds, double[4] ==
  // WALL, SETUP & HOST ==> GPUs, COMPUTATION, CLEANUP & GPUs ==> HOST
 ) throw()
 {
-  Long timers[4] = { MkLong(0) };
+  long long timers[4] = { 0ll };
   stopwatch_reset(timers[0]);
 
   if (routine >= 16u)
@@ -62,7 +62,7 @@ hypJacL2
   if (full_svd) {
     if (!hV)
       return -7;
-    if (ldhV < nrow)
+    if (ldhV < ncol)
       return -8;
   }
 
@@ -89,8 +89,8 @@ hypJacL2
 
   double *const dD = allocDeviceVec<double>(static_cast<size_t>(ncol));
 
-  volatile unsigned Long *cvg_dat = static_cast<volatile unsigned Long*>(NULL);
-  CUDA_CALL(cudaHostAlloc((void**)&cvg_dat, sizeof(unsigned Long), cudaHostAllocPortable | cudaHostAllocMapped));
+  volatile unsigned long long *cvg_dat = static_cast<volatile unsigned long long*>(NULL);
+  CUDA_CALL(cudaHostAlloc((void**)&cvg_dat, sizeof(unsigned long long), cudaHostAllocPortable | cudaHostAllocMapped));
 
   CUDA_CALL(cudaMemcpy2DAsync(dG, lddG * sizeof(double), hG, ldhG * sizeof(double), nrow * sizeof(double), ncol, cudaMemcpyHostToDevice));
   if (full_svd)
@@ -112,9 +112,9 @@ hypJacL2
   void (*const hypJac1)(const unsigned, const unsigned) =
     (cdsort ? (full_svd ? hypJacL1sv : hypJacL1s) : (full_svd ? hypJacL1v : hypJacL1));
 
-  *glb_s = MkLong(0u);
-  *glb_b = MkLong(0u);
-  Long swp_tim = MkLong(0);
+  *glb_s = 0ull;
+  *glb_b = 0ull;
+  long long swp_tim = 0ll;
   stopwatch_reset(swp_tim);
 
   const unsigned swp = swp_max[1u];
@@ -156,7 +156,7 @@ hypJacL2
     ++blk_swp;
     CUDA_CALL(cudaDeviceSynchronize());
 
-    const unsigned Long cvg = *cvg_dat;
+    const unsigned long long cvg = *cvg_dat;
     const unsigned cvg_s = static_cast<unsigned>(cvg);
     *glb_s += cvg_s;
     const unsigned cvg_b = static_cast<unsigned>(cvg >> 32u);
