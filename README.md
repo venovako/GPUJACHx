@@ -60,8 +60,8 @@ Here is a Matlab code template to create an input dataset:
 % G: input double precision M x N real matrix to compute (H)SVD of.
 %    size(G) = [LDA N]
 % LDA >= M >= N >= NPLUS >= 0;
-%    for 1 GPU: (LDA = M = N) mod 64 == 0,
-%    for 4 GPUs: (LDA = M = N) mod 256 == 0,
+%    for 1 GPU: (LDA = M >= N) mod 64 == 0,
+%    for 4 GPUs: (LDA = M >= N) mod 256 == 0,
 %    N = NPLUS for SVD (J = I),
 %    N > NPLUS for HSVD (NPLUS positive (+1) and N-NPLUS negative (-1) signs in J).
 IDADIM=int32([LDA; M; N; NPLUS]);
@@ -88,7 +88,7 @@ E.g., if the input matrix dataset has `2048` columns, the HDF5 group in which it
 Hint: if the file is viewed with, e.g., [HDFView](https://www.hdfgroup.org/downloads/hdfview/ "A free HDF5 viewer/editor."), `G` will look as if having `N` rows and `M` columns, which is perfectly normal, since the Fortran data look transposed in C, and vice versa.
 Matlab and Scilab store and read data in the correct format for GPUJACHx.
 
-For simplicity, it is expected that `LDA=M=N`, and that all dimensions are a multiple of `64`.  That is not a big issue, though, since a matrix can always be "bordered".
+For simplicity, it is expected that `LDA=M>=N`, and that all dimensions are a multiple of `64`.  That is not a big issue, though, since a matrix can always be "bordered".
 
 The bordering can be done in, e.g., Matlab or Scilab, as follows (`I` is an identity matrix):
 
