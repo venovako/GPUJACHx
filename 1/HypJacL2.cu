@@ -102,7 +102,7 @@ hypJacL2
   timers[1] = stopwatch_lap(timers[3]);
 
   if (full_svd) {
-    initV(dV, 0u, ncol, static_cast<unsigned>(lddV), static_cast<cudaStream_t>(NULL));
+    initV(dV, 0u, ncol, static_cast<unsigned>(lddV));
     CUDA_CALL(cudaDeviceSynchronize());
   }
 
@@ -174,7 +174,7 @@ hypJacL2
 #endif // ANIMATE
 
   *glbSwp = blk_swp;
-  initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(lddG), static_cast<cudaStream_t>(NULL));
+  initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(lddG));
   CUDA_CALL(cudaDeviceSynchronize());
 
   timers[2] = stopwatch_lap(timers[3]);

@@ -17,101 +17,49 @@ static const dim3 jacL1bD(HYPJACL1_THREADS_PER_BLOCK_X, HYPJACL1_THREADS_PER_BLO
 void defJacL1(const unsigned step, const int definite VAR_UNUSED) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-  CUDA_CALL(cudaSetupArgument(step, static_cast<size_t>(0u)));
-  CUDA_CALL(cudaLaunch(dDefJacL1));
+  dDefJacL1<<< jacL1gD, jacL1bD >>>(step);
 }
 
 void hypJacL1(const unsigned step, const unsigned npos) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(npos, off));
-
-  CUDA_CALL(cudaLaunch(dHypJacL1));
+  dHypJacL1<<< jacL1gD, jacL1bD >>>(step, npos);
 }
 
 void defJacL1v(const unsigned step, const int definite VAR_UNUSED) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-  CUDA_CALL(cudaSetupArgument(step, static_cast<size_t>(0u)));
-  CUDA_CALL(cudaLaunch(dDefJacL1v));
+  dDefJacL1v<<< jacL1gD, jacL1bD >>>(step);
 }
 
 void hypJacL1v(const unsigned step, const unsigned npos) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(npos, off));
-
-  CUDA_CALL(cudaLaunch(dHypJacL1v));
+  dHypJacL1v<<< jacL1gD, jacL1bD >>>(step, npos);
 }
 
 void defJacL1s(const unsigned step, const int definite) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(definite, off));
-
-  CUDA_CALL(cudaLaunch(dDefJacL1s));
+  dDefJacL1s<<< jacL1gD, jacL1bD >>>(step, definite);
 }
 
 void hypJacL1s(const unsigned step, const unsigned npos) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(npos, off));
-
-  CUDA_CALL(cudaLaunch(dHypJacL1s));
+  dHypJacL1s<<< jacL1gD, jacL1bD >>>(step, npos);
 }
 
 void defJacL1sv(const unsigned step, const int definite) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(definite, off));
-
-  CUDA_CALL(cudaLaunch(dDefJacL1sv));
+  dDefJacL1sv<<< jacL1gD, jacL1bD >>>(step, definite);
 }
 
 void hypJacL1sv(const unsigned step, const unsigned npos) throw()
 {
   const dim3 jacL1gD(STRAT1_PAIRS, 1u, 1u);
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(jacL1gD, jacL1bD));
-
-  CUDA_CALL(cudaSetupArgument(step, off));
-  off += sizeof(step);
-  CUDA_CALL(cudaSetupArgument(npos, off));
-
-  CUDA_CALL(cudaLaunch(dHypJacL1sv));
+  dHypJacL1sv<<< jacL1gD, jacL1bD >>>(step, npos);
 }
 
 void initD
@@ -121,8 +69,7 @@ void initD
  const unsigned nRow,
  const unsigned nRank,
  const unsigned nPlus,
- const unsigned ldG,
- const cudaStream_t s
+ const unsigned ldG
 ) throw()
 {
   const dim3 bD(2u * WARP_SZ, 1u, 1u);
@@ -134,52 +81,20 @@ void initD
     bD.x * sizeof(double)
 #endif // __CUDA_ARCH__
   ;
-
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(gD, bD, shmD, s));
-
-  CUDA_CALL(cudaSetupArgument(G, off));
-  off += sizeof(G);
-  CUDA_CALL(cudaSetupArgument(D, off));
-  off += sizeof(D);
-  CUDA_CALL(cudaSetupArgument(ifc, off));
-  off += sizeof(ifc);
-  CUDA_CALL(cudaSetupArgument(nRow, off));
-  off += sizeof(nRow);
-  CUDA_CALL(cudaSetupArgument(nRank, off));
-  off += sizeof(nRank);
-  CUDA_CALL(cudaSetupArgument(nPlus, off));
-  off += sizeof(nPlus);
-  CUDA_CALL(cudaSetupArgument(ldG, off));
-
-  CUDA_CALL(cudaLaunch(dInitD));
+  dInitD<<< gD, bD, shmD >>>(G, D, ifc, nRow, nRank, nPlus, ldG);
 }
 
 void initV
 (double *const V,
  const unsigned ifc,
  const unsigned nRank,
- const unsigned ldV,
- const cudaStream_t s
+ const unsigned ldV
 ) throw()
 {
   const dim3 bD(2u * WARP_SZ, 1u, 1u);
   const dim3 gD(udiv_ceil(nRank, bD.x), 1u, 1u);
-
-  size_t off = static_cast<size_t>(0u);
-
-  CUDA_CALL(cudaConfigureCall(gD, bD, static_cast<size_t>(0u), s));
-
-  CUDA_CALL(cudaSetupArgument(V, off));
-  off += sizeof(V);
-  CUDA_CALL(cudaSetupArgument(ifc, off));
-  off += sizeof(ifc);
-  CUDA_CALL(cudaSetupArgument(nRank, off));
-  off += sizeof(nRank);
-  CUDA_CALL(cudaSetupArgument(ldV, off));
-
-  CUDA_CALL(cudaLaunch(dInitV));
+  const size_t shmD = static_cast<size_t>(0u);
+  dInitV<<< gD, bD, shmD >>>(V, ifc, nRank, ldV);
 }
 
 void initSymbols

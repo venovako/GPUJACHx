@@ -15,8 +15,8 @@ extern void hypJacL1s(const unsigned step, const unsigned npos) throw();
 extern void defJacL1sv(const unsigned step, const int definite) throw();
 extern void hypJacL1sv(const unsigned step, const unsigned npos) throw();
 
-extern void initD(double *const G, double *const D, const unsigned ifc, const unsigned nRow, const unsigned nRank, const unsigned nPos, const unsigned ldG, const cudaStream_t s) throw();
-extern void initV(double *const V, const unsigned ifc, const unsigned nRank, const unsigned ldV, const cudaStream_t s) throw();
+extern void initD(double *const G, double *const D, const unsigned ifc, const unsigned nRow, const unsigned nRank, const unsigned nPos, const unsigned ldG) throw();
+extern void initV(double *const V, const unsigned ifc, const unsigned nRank, const unsigned ldV) throw();
 
 extern void initSymbols(double *const G, double *const V, volatile unsigned long long *const cvg, const unsigned nRow, const unsigned nCol, const unsigned ldG, const unsigned ldV, const unsigned nSwp) throw();
 

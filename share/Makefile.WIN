@@ -11,12 +11,16 @@ NVCC=nvcc.exe
 !ENDIF # !NVCC
 
 !IFNDEF GPU_ARCH
-GPU_ARCH=sm_30
+GPU_ARCH=30
 !ENDIF # !GPU_ARCH
 
 !IFNDEF CUBLAS
 CUBLAS=2
 !ENDIF # !CUBLAS
+
+!IFNDEF STD
+STD=11
+!ENDIF # !STD
 
 !IFNDEF HDF5
 HDF5=C:\HDF5
@@ -27,7 +31,7 @@ HDF5_L=-L$(HDF5)\lib
 HDF5_l=-l libhdf5_hl,libhdf5
 
 NVPPFLAGS=-I. -I..\share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=--cl-version $(MSVC_VERSION) -std c++14 -arch $(GPU_ARCH) -restrict -res-usage -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD
+NVCCFLAGS=--cl-version $(MSVC_VERSION) -std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 !IFDEF NDEBUG

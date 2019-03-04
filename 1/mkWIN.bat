@@ -1,5 +1,5 @@
 @echo off
-set GPU_ARCH=sm_%1
+set GPU_ARCH=%1
 shift
 set NDEBUG=%1
 shift

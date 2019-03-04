@@ -7,12 +7,16 @@ NVCC=nvcc
 endif # !NVCC
 
 ifndef GPU_ARCH
-GPU_ARCH=sm_30
+GPU_ARCH=30
 endif # !GPU_ARCH
 
 ifndef CUBLAS
 CUBLAS=2
 endif # !CUBLAS
+
+ifndef STD
+STD=11
+endif # !STD
 
 ifndef HDF5
 HDF5=$(HOME)/hdf5
@@ -23,7 +27,7 @@ HDF5_L=-L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-std c++14 -arch $(GPU_ARCH) -restrict -res-usage -Xcompiler -ffp-contract=on,-march=native,-integrated-as
+NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler -ffp-contract=on,-march=native,-integrated-as
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
