@@ -9,7 +9,7 @@
 #endif // ?__CUDACC_VER_MAJOR__
 #else // _shfl_xor
 #error _shfl_xor already defined
-#endif // !_shfl_xor
+#endif // ?_shfl_xor
 
 #ifndef _shfl
 #if __CUDACC_VER_MAJOR__ >= 9
@@ -19,7 +19,7 @@
 #endif // ?__CUDACC_VER_MAJOR__
 #else // _shfl
 #error _shfl already defined
-#endif // !_shfl
+#endif // ?_shfl
 
 // sum x
 // Kepler warp shuffle

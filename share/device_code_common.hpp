@@ -5,41 +5,41 @@
 #define MYKERN __global__ void
 #else // MYKERN
 #error MYKERN not definable externally
-#endif // !MYKERN
+#endif // ?MYKERN
 
 #ifndef MYDEVFN
 #ifdef NDEBUG
 #define MYDEVFN __device__ __forceinline__
 #else // DEBUG
 #define MYDEVFN __device__
-#endif // NDEBUG
+#endif // ?NDEBUG
 #else // MYDEVFN
 #error MYDEVFN not definable externally
-#endif // !MYDEVFN
+#endif // ?MYDEVFN
 
 #ifndef HYPJACL1_MAX_THREADS_PER_BLOCK
 #define HYPJACL1_MAX_THREADS_PER_BLOCK 512
 #else // HYPJACL1_MAX_THREADS_PER_BLOCK
 #error HYPJACL1_MAX_THREADS_PER_BLOCK not definable externally
-#endif // !HYPJACL1_MAX_THREADS_PER_BLOCK
+#endif // ?HYPJACL1_MAX_THREADS_PER_BLOCK
 
 #ifndef HYPJACL1_THREADS_PER_BLOCK_X
 #define HYPJACL1_THREADS_PER_BLOCK_X 32u
 #else // HYPJACL1_THREADS_PER_BLOCK_X
 #error HYPJACL1_THREADS_PER_BLOCK_X not definable externally
-#endif // !HYPJACL1_THREADS_PER_BLOCK_X
+#endif // ?HYPJACL1_THREADS_PER_BLOCK_X
 
 #ifndef HYPJACL1_THREADS_PER_BLOCK_Y
 #define HYPJACL1_THREADS_PER_BLOCK_Y 16u
 #else // HYPJACL1_THREADS_PER_BLOCK_Y
 #error HYPJACL1_THREADS_PER_BLOCK_Y not definable externally
-#endif // !HYPJACL1_THREADS_PER_BLOCK_Y
+#endif // ?HYPJACL1_THREADS_PER_BLOCK_Y
 
 #ifndef HYPJACL1_MIN_BLOCKS_PER_SM
 #define HYPJACL1_MIN_BLOCKS_PER_SM 1
 #else // HYPJACL1_MIN_BLOCKS_PER_SM
 #error HYPJACL1_MIN_BLOCKS_PER_SM not definable externally
-#endif // !HYPJACL1_MIN_BLOCKS_PER_SM
+#endif // ?HYPJACL1_MIN_BLOCKS_PER_SM
 
 #if (WARP_SZ != 32u)
 #error WARP_SZ not 32
@@ -49,31 +49,31 @@
 #define WARP_SZ_LG 5u
 #else // WARP_SZ_LG
 #error WARP_SZ_LG not definable externally
-#endif // !WARP_SZ_LG
+#endif // ?WARP_SZ_LG
 
 #ifndef WARP_SZ_LGi
 #define WARP_SZ_LGi 5
 #else // WARP_SZ_LGi
 #error WARP_SZ_LGi not definable externally
-#endif // !WARP_SZ_LGi
+#endif // ?WARP_SZ_LGi
 
 #ifndef WARP_SZ_SUB1
 #define WARP_SZ_SUB1 31u
 #else // WARP_SZ_SUB1
 #error WARP_SZ_SUB1 not definable externally
-#endif // !WARP_SZ_SUB1
+#endif // ?WARP_SZ_SUB1
 
 #ifndef F32
 #define F32(A, r, c) (A)[(c) * 32u + (r)]
 #else // F32
 #error F32 not definable externally
-#endif // !F32
+#endif // ?F32
 
 #ifndef F64
 #define F64(A, r, c) (A)[(c) * 64u + (r)]
 #else // F64
 #error F64 not definable externally
-#endif // !F64
+#endif // ?F64
 
 #ifdef USE_DRMAC
 #ifndef USE_QR
@@ -139,13 +139,13 @@ my_drsqrt_rn(double a)
 #include "device_code_common_Kepler.hpp"
 #else // Fermi
 #include "device_code_common_Fermi.hpp"
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
 #ifdef USE_QR
 #include "device_code_common_QR.hpp"
 #else // Cholesky
 #include "device_code_common_Cholesky.hpp"
-#endif // USE_QR
+#endif // ?USE_QR
 
 MYDEVFN void dMultAV
 (double *const A0,
@@ -200,7 +200,7 @@ MYKERN dInitD
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
   extern __shared__ double shPool[];
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
   const unsigned wpb = (blockDim.x + WARP_SZ_SUB1) >> WARP_SZ_LG;
   const unsigned wid = threadIdx.x >> WARP_SZ_LG;
@@ -220,7 +220,7 @@ MYKERN dInitD
 #else // Fermi
     volatile double *const shPtr = (volatile double*)(shPool + wid * WARP_SZ);
     y = dSum32(x, shPtr, lid);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
     x = __dsqrt_rn(y);
     for (double *pGi = bGi; pGi < eGi; pGi += WARP_SZ)
       *pGi = __ddiv_rn(*pGi, x);

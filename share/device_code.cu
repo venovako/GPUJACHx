@@ -79,7 +79,7 @@ void initD
     static_cast<size_t>(0u)
 #else // Fermi
     bD.x * sizeof(double)
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
   ;
   dInitD<<< gD, bD, shmD >>>(G, D, ifc, nRow, nRank, nPlus, ldG);
 }

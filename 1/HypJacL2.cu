@@ -24,7 +24,7 @@ hypJacL2
  const unsigned ldhG,        // IN, leading dimension of G, >= nrow
  double *const hV,           // OUT, optional, ldhV x ncol host array in Fortran order,
  // V^{-T} of G = U \Sigma V^T
- const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= nrow
+ const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= ncol
  double *const hD,           // OUT, eigenvalues of G J G^T, optionally sorted in descending order
  unsigned *const glbSwp,     // OUT, number of sweeps at the outermost level
  unsigned long long *const glb_s, // OUT, number of rotations

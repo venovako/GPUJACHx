@@ -72,14 +72,14 @@ MYDEVFN void dCholesky32
     const double Akk = (((y0 == k) && (x >= k)) ? F32(A, k, k) : 0.0);
 #else // DIV
     const double Akk = (((y0 == k) && (x >= k)) ? __dsqrt_rn(F32(A, k, k)) : 0.0);
-#endif // USE_RSQRT
+#endif // ?USE_RSQRT
     __syncthreads();
     if ((y0 == k) && (x >= k)) {
 #ifdef USE_RSQRT
       F32(A, x, k) = (x > k) ? (F32(A, x, k) * my_drsqrt_rn(Akk)) : __dsqrt_rn(Akk);
 #else // DIV
       F32(A, x, k) = (x > k) ? __ddiv_rn(F32(A, x, k), Akk) : Akk;
-#endif // USE_RSQRT
+#endif // ?USE_RSQRT
     }
     __syncthreads();
 
@@ -113,7 +113,7 @@ MYDEVFN void dCholesky32
     const double Akk = (((y1 == k) && (x >= k)) ? F32(A, k, k) : 0.0);
 #else // DIV
     const double Akk = (((y1 == k) && (x >= k)) ? __dsqrt_rn(F32(A, k, k)) : 0.0);
-#endif // USE_RSQRT
+#endif // ?USE_RSQRT
     __syncthreads();
     if ((y1 == k) && (x >= k)) {
 #ifdef USE_RSQRT

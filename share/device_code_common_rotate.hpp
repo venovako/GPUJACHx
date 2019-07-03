@@ -112,7 +112,7 @@ dRotH(const double Apq, const double Dp, const double Dq, double &c, double &t)
     return 1;
   }
 }
-#endif // USE_RSQRT
+#endif // ?USE_RSQRT
 
 // [  C S ] [ F ] = [ R ]
 // [ -S C ] [ G ]   [ 0 ]

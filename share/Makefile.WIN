@@ -14,10 +14,6 @@ NVCC=nvcc.exe
 GPU_ARCH=30
 !ENDIF # !GPU_ARCH
 
-!IFNDEF CUBLAS
-CUBLAS=2
-!ENDIF # !CUBLAS
-
 !IFNDEF STD
 STD=11
 !ENDIF # !STD
@@ -41,24 +37,6 @@ NVCCFLAGS=$(NVCCFLAGS) -O$(NDEBUG)
 NVPPFLAGS=$(NVPPFLAGS) -UNDEBUG
 NVCCFLAGS=$(NVCCFLAGS) -O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
 !ENDIF # NDEBUG
-
-!IFDEF CUBLAS
-NVPPFLAGS=$(NVPPFLAGS) -DHAVE_CUBLAS=$(CUBLAS)
-NVLDFLAGS=$(NVLDFLAGS) -l cublas
-!ELSE # !CUBLAS
-NVPPFLAGS=$(NVPPFLAGS) -UHAVE_CUBLAS
-!ENDIF # CUBLAS
-
-!IFDEF MKL
-!IF ("$(MKL)"!="sequential")
-!ERROR MKL is only supported without threading (sequential)
-!ELSE # sequential
-NVPPFLAGS=$(NVPPFLAGS) -DUSE_MKL=$(MKL) -I$(MKLROOT)\include
-NVLDFLAGS=$(NVLDFLAGS) -L$(MKLROOT)\lib\intel64 -lmkl_intel_lp64_dll,mkl_sequential_dll,mkl_core_dll
-!ENDIF # !sequential
-!ELSE # !MKL
-NVPPFLAGS=$(NVPPFLAGS) -UUSE_MKL
-!ENDIF # MKL
 
 HEADERS2=						\
 	..\share\cuda_helper.hpp			\

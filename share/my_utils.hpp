@@ -9,7 +9,7 @@
 #error err_msg_size not definable externally
 #endif // !err_msg_size
 
-EXTERN_C TLS char err_msg[err_msg_size];
+EXTERN_C char err_msg[err_msg_size];
 
 #ifndef WARN
 #define WARN(msg) {                                                             \
@@ -17,7 +17,7 @@ EXTERN_C TLS char err_msg[err_msg_size];
   }
 #else // WARN
 #error WARN not definable externally
-#endif // !WARN
+#endif // ?WARN
 
 #ifndef DIE
 #define DIE(msg) {                                                            \
@@ -26,7 +26,7 @@ EXTERN_C TLS char err_msg[err_msg_size];
   }
 #else // DIE
 #error DIE not definable externally
-#endif // !DIE
+#endif // ?DIE
 
 #ifndef SYSI_CALL
 #define SYSI_CALL(call) {						\
@@ -38,7 +38,7 @@ EXTERN_C TLS char err_msg[err_msg_size];
   }
 #else // SYSI_CALL
 #error SYSI_CALL not definable externally
-#endif // !SYSI_CALL
+#endif // ?SYSI_CALL
 
 #ifndef SYSP_CALL
 #define SYSP_CALL(call) {						\
@@ -50,13 +50,13 @@ EXTERN_C TLS char err_msg[err_msg_size];
   }
 #else
 #error SYSP_CALL not definable externally
-#endif // !SYSP_CALL
+#endif // ?SYSP_CALL
 
-extern int fexist(const char *const fn) throw();
+EXTERN_C int fexist(const char *const fn) throw();
 
-extern void *strat_open(const char *const sdy) throw();
-extern int strat_close(void *const h) throw();
-extern const void *strat_ptr(void *const h, const char *const snp, const unsigned n) throw();
+EXTERN_C void *strat_open(const char *const sdy) throw();
+EXTERN_C int strat_close(void *const h) throw();
+EXTERN_C const void *strat_ptr(void *const h, const char *const snp, const unsigned n) throw();
 
 template <typename T>
 T udiv_ceil(const T a, const T b) throw()
@@ -94,23 +94,23 @@ cA(T *const A, const unsigned c, const unsigned ldA) throw()
 #define TS2S 1e-7
 #else // POSIX
 #define TS2S 1e-6
-#endif // _WIN32
+#endif // ?_WIN32
 #else // TS2S
 #error TS2S not definable externally
-#endif // !TS2S
+#endif // ?TS2S
 
 #ifndef TS_S
 #ifdef _WIN32
 #define TS_S 10000000ll
 #else // POSIX
 #define TS_S 1000000ll
-#endif // _WIN32
+#endif // ?_WIN32
 #else // TS_S
 #error TS_S not definable externally
-#endif // !TS_S
+#endif // ?TS_S
 
-extern long long timestamp() throw();
-extern void stopwatch_reset(long long &sw) throw();
-extern long long stopwatch_lap(long long &sw) throw();
+EXTERN_C long long timestamp() throw();
+EXTERN_C void stopwatch_reset(long long &sw) throw();
+EXTERN_C long long stopwatch_lap(long long &sw) throw();
 
 #endif // !MY_UTILS_HPP

@@ -10,10 +10,6 @@ ifndef GPU_ARCH
 GPU_ARCH=60
 endif # !GPU_ARCH
 
-ifndef CUBLAS
-CUBLAS=2
-endif # !CUBLAS
-
 ifndef STD
 STD=11
 endif # !STD
@@ -26,11 +22,7 @@ HDF5_I=-I$(HDF5)/include
 HDF5_L=-Xlinker -rpath=$(HDF5)/lib -L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
-ifeq ($(ESSL),smp)
-THR=-qsmp=omp
-else # doesn't need OpenMP
 THR=-pthread
-endif # gnu_thread
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
 NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler $(THR)
@@ -43,33 +35,6 @@ else # debug
 NVPPFLAGS+=-UNDEBUG
 NVCCFLAGS+=-O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
 endif # NDEBUG
-
-ifdef MULTI_GPU
-ifndef MAGMA
-MAGMA=$(HOME)/magma
-endif # !MAGMA
-NVPPFLAGS+=-DUSE_MULTI_GPU -DADD_ -I$(MAGMA)/include
-NVLDFLAGS+=-L$(MAGMA)/lib -l magma,magmablas
-else # SINGLE_GPU
-NVPPFLAGS+=-UUSE_MULTI_GPU
-endif # MULTI_GPU
-
-ifdef CUBLAS
-NVPPFLAGS+=-DHAVE_CUBLAS=$(CUBLAS)
-NVLDFLAGS+=-l cublas
-else # !CUBLAS
-NVPPFLAGS+=-UHAVE_CUBLAS
-endif # CUBLAS
-
-ifdef ESSL
-NVPPFLAGS+=-DUSE_MKL=$(ESSL)
-ifeq ($(ESSL),smp)
-NVLDFLAGS+=-l esslsmp
-endif # smp
-NVLDFLAGS+=-l essl
-else # !ESSL
-NVPPFLAGS+=-UUSE_MKL
-endif # ESSL
 
 NVLDFLAGS+=-l dl,m
 
@@ -99,15 +64,8 @@ HEADERS2=						\
 	../share/HypJacL.hpp				\
 	../share/my_utils.hpp
 
-HEADERS3=					\
-	../share/magma_helper.hpp		\
-	../share/posix_threads_helper.hpp
-
 SOURCES2=				\
 	../share/cuda_helper.cu		\
 	../share/device_code.cu		\
 	../share/HypJacL.cu		\
 	../share/my_utils.cu
-
-SOURCES3=					\
-	../share/posix_threads_helper.cu

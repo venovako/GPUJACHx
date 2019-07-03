@@ -23,7 +23,7 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif // !_GNU_SOURCE
-#endif // _WIN32
+#endif // ?_WIN32
 
 #ifdef USE_MKL
 #ifndef MKL_Complex8
@@ -31,7 +31,7 @@
 #define MKL_Complex8 std::complex<float>
 #else // C99
 #define MKL_Complex8 float _Complex
-#endif // __cplusplus
+#endif // ?__cplusplus
 #endif // !MKL_Complex8
 
 #ifndef MKL_Complex16
@@ -39,7 +39,7 @@
 #define MKL_Complex16 std::complex<double>
 #else // C99
 #define MKL_Complex16 double _Complex
-#endif // __cplusplus
+#endif // ?__cplusplus
 #endif // !MKL_Complex16
 #endif // USE_MKL
 
@@ -52,8 +52,8 @@
 #else // C99
 #include <math.h>
 #include <complex.h>
-#endif // __cplusplus
-#endif // __INTEL_COMPILER
+#endif // ?__cplusplus
+#endif // ?__INTEL_COMPILER
 
 #ifdef USE_MKL
 #include <mkl.h>
@@ -83,7 +83,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#endif // __cplusplus
+#endif // ?__cplusplus
 
 #ifdef _WIN32
 #include <io.h>
@@ -94,7 +94,7 @@
 #else // POSIX
 #include <alloca.h>
 #include <sys/time.h>
-#endif // _WIN32
+#endif // ?_WIN32
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -107,7 +107,7 @@
 #endif // !snprintf
 #else // POSIX
 #include <unistd.h>
-#endif // _WIN32
+#endif // ?_WIN32
 
 // defines
 
@@ -116,24 +116,10 @@
 #define EXTERN_C extern "C"
 #else // C
 #define EXTERN_C extern
-#endif // __cplusplus
+#endif // ?__cplusplus
 #else // EXTERN_C
 #error EXTERN_C not definable externally
-#endif // !EXTERN_C
-
-#ifdef TLS
-#error TLS not definable externally
-#endif // TLS
-
-#ifdef USE_MULTI_GPU
-#ifdef _WIN32
-#define TLS __declspec(thread)
-#else // POSIX
-#define TLS __thread
-#endif // _WIN32
-#else // !USE_MULTI_GPU
-#define TLS
-#endif // USE_MULTI_GPU
+#endif // ?EXTERN_C
 
 #ifdef VAR_UNUSED
 #error VAR_UNUSED not definable externally
@@ -143,6 +129,6 @@
 #define VAR_UNUSED
 #else // POSIX
 #define VAR_UNUSED __attribute__ ((unused))
-#endif // _WIN32
+#endif // ?_WIN32
 
 #endif // !DEFINES_HPP

@@ -7,9 +7,9 @@ EXTERN_C void* __stdcall GetProcAddress(void*, const char*);
 EXTERN_C int __stdcall FreeLibrary(void*);
 #else // POSIX -ldl
 #include <dlfcn.h>
-#endif // _WIN32
+#endif //? _WIN32
 
-TLS char err_msg[err_msg_size] = { '\0' };
+char err_msg[err_msg_size] = { '\0' };
 
 int fexist(const char *const fn) throw()
 {
@@ -24,7 +24,7 @@ int fexist(const char *const fn) throw()
 #else // POSIX
   struct stat buf;
   return (fn ? (0 == stat(fn, &buf)) : 0);
-#endif // _WIN32
+#endif // ?_WIN32
 }
 
 void *strat_open(const char *const sdy) throw()
@@ -34,7 +34,7 @@ void *strat_open(const char *const sdy) throw()
     LoadLibraryA(sdy);
 #else // POSIX
     dlopen(sdy, RTLD_LAZY);
-#endif // _WIN32
+#endif // ?_WIN32
 }
 
 int strat_close(void *const h) throw()
@@ -44,7 +44,7 @@ int strat_close(void *const h) throw()
     !FreeLibrary(h);
 #else // POSIX
     dlclose(h);
-#endif // _WIN32
+#endif // ?_WIN32
 }
 
 const void *strat_ptr(void *const h, const char *const snp, const unsigned n) throw()
@@ -56,7 +56,7 @@ const void *strat_ptr(void *const h, const char *const snp, const unsigned n) th
     GetProcAddress(h, arrn)
 #else // POSIX
     dlsym(h, arrn)
-#endif // _WIN32
+#endif // ?_WIN32
   );
 }
 
@@ -70,7 +70,7 @@ long long timestamp() throw()
   struct timeval tv;
   SYSI_CALL(gettimeofday(&tv, static_cast<struct timezone*>(NULL)));
   return (tv.tv_sec * TS_S + tv.tv_usec);
-#endif // _WIN32
+#endif // ?_WIN32
 }
 
 void stopwatch_reset(long long &sw) throw()

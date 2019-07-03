@@ -7,7 +7,7 @@ MYDEVFN unsigned dDefJacL0posd
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
  const unsigned x,
  const unsigned y)
 {
@@ -49,7 +49,7 @@ MYDEVFN unsigned dDefJacL0posd
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -142,7 +142,7 @@ MYDEVFN unsigned dDefJacL0negd
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
  const unsigned x,
  const unsigned y)
 {
@@ -184,7 +184,7 @@ MYDEVFN unsigned dDefJacL0negd
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const double
         Dp_ = __dsqrt_rn(Dp),

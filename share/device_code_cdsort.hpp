@@ -5,7 +5,7 @@
 #include "device_code_cdsort_Drmac.hpp"
 #else // KISS
 #include "device_code_cdsort_KISS.hpp"
-#endif // USE_DRMAC
+#endif // ?USE_DRMAC
 
 MYDEVFN unsigned dDefJacL0s
 (volatile double *const G,
@@ -20,7 +20,7 @@ MYDEVFN unsigned dDefJacL0s
   const unsigned y2 = (y << 1u);
   volatile double *const shPtr = &(F32(V, 0u, y2));
   return ((definite >= 0) ? dDefJacL0posd(G, V, shPtr, x, y) : dDefJacL0negd(G, V, shPtr, x, y));
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 }
 
 // TODO: implement the new convergence criterion for the hyperbolic codes as well.
@@ -36,7 +36,7 @@ MYDEVFN unsigned dHypJacL0s
 #else // Fermi
   const unsigned y2 = (y << 1u);
   volatile double *const shPtr = &(F32(V, 0u, y2));
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
   unsigned
     blk_transf_s = 0u,
@@ -76,7 +76,7 @@ MYDEVFN unsigned dHypJacL0s
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const double
         Dp_ = __dsqrt_rn(Dp),

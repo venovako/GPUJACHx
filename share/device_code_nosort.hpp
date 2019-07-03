@@ -11,7 +11,7 @@ MYDEVFN unsigned dDefJacL0
 #else // Fermi
   const unsigned y2 = (y << 1u);
   volatile double *const shPtr = &(F32(V, 0u, y2));
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
   unsigned
     blk_transf_s = 0u,
@@ -51,7 +51,7 @@ MYDEVFN unsigned dDefJacL0
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // __CUDA_ARCH
+#endif // ?__CUDA_ARCH
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -124,7 +124,7 @@ MYDEVFN unsigned dHypJacL0
 #else // Fermi
   const unsigned y2 = (y << 1u);
   volatile double *const shPtr = &(F32(V, 0u, y2));
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
   unsigned
     blk_transf_s = 0u,
@@ -164,7 +164,7 @@ MYDEVFN unsigned dHypJacL0
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const double
         Dp_ = __dsqrt_rn(Dp),

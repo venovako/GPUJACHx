@@ -3,7 +3,7 @@
 
 #include "defines.hpp"
 
-extern int // 0 if OK, < 0 if invalid argument, > 0 if error
+EXTERN_C int // 0 if OK, < 0 if invalid argument, > 0 if error
 hypJacL2
 (const unsigned routine,     // IN, routine ID, <= 15, (B_FS)_2
  // B: block-oriented or full-block,
@@ -17,7 +17,7 @@ hypJacL2
  const unsigned ldhG,        // IN, leading dimension of G, >= nrow
  double *const hV,           // OUT, optional, ldhV x ncol host array in Fortran order,
  // V^{-T} of G = U \Sigma V^T
- const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= nrow
+ const unsigned ldhV,        // IN, optional, leading dimension of V^{-T}, >= ncol
  double *const hD,           // OUT, eigenvalues of G J G^T, optionally sorted in descending order
  unsigned *const glbSwp,     // OUT, number of sweeps at the outermost level
  unsigned long long *const glb_s, // OUT, number of rotations

@@ -10,10 +10,6 @@ ifndef GPU_ARCH
 GPU_ARCH=30
 endif # !GPU_ARCH
 
-ifndef CUBLAS
-CUBLAS=2
-endif # !CUBLAS
-
 ifndef STD
 STD=11
 endif # !STD
@@ -37,16 +33,6 @@ else # debug
 NVPPFLAGS+=-UNDEBUG
 NVCCFLAGS+=-O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
 endif # NDEBUG
-
-NVPPFLAGS+=-UUSE_MULTI_GPU
-NVPPFLAGS+=-UUSE_MKL
-
-ifdef CUBLAS
-NVPPFLAGS+=-DHAVE_CUBLAS=$(CUBLAS)
-NVLDFLAGS+=-l cublas
-else # !CUBLAS
-NVPPFLAGS+=-UHAVE_CUBLAS
-endif # CUBLAS
 
 NVLDFLAGS+=-l z,dl,m
 
@@ -76,15 +62,8 @@ HEADERS2=						\
 	../share/HypJacL.hpp				\
 	../share/my_utils.hpp
 
-HEADERS3=					\
-	../share/magma_helper.hpp		\
-	../share/posix_threads_helper.hpp
-
 SOURCES2=				\
 	../share/cuda_helper.cu		\
 	../share/device_code.cu		\
 	../share/HypJacL.cu		\
 	../share/my_utils.cu
-
-SOURCES3=					\
-	../share/posix_threads_helper.cu

@@ -7,7 +7,7 @@ MYDEVFN unsigned dDefJacL0posd
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
  const unsigned x,
  const unsigned y)
 {
@@ -42,7 +42,7 @@ MYDEVFN unsigned dDefJacL0posd
         Ap = dNRM2_32(Gp, shPtr, x),
         Aq = dNRM2_32(Gq, shPtr, x),
         CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const int transf_s = (fabs(CosA) >= HYPJAC_MYTOL);
       swp_transf_s += (__syncthreads_count(transf_s) >> WARP_SZ_LGi);
@@ -139,7 +139,7 @@ MYDEVFN unsigned dDefJacL0posd
         F32(V, x, p) = Vp;
         F32(V, x, q) = Vq;
       }
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       swp_transf_b += (__syncthreads_count(transf_b) >> WARP_SZ_LGi);
     }
@@ -173,7 +173,7 @@ MYDEVFN unsigned dDefJacL0negd
 #if __CUDA_ARCH__ >= 300
 #else // Fermi
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
  const unsigned x,
  const unsigned y)
 {
@@ -208,7 +208,7 @@ MYDEVFN unsigned dDefJacL0negd
         Ap = dNRM2_32(Gp, shPtr, x),
         Aq = dNRM2_32(Gq, shPtr, x),
         CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       const int transf_s = (fabs(CosA) >= HYPJAC_MYTOL);
       swp_transf_s += (__syncthreads_count(transf_s) >> WARP_SZ_LGi);
@@ -305,7 +305,7 @@ MYDEVFN unsigned dDefJacL0negd
         F32(V, x, p) = Vp;
         F32(V, x, q) = Vq;
       }
-#endif // __CUDA_ARCH__
+#endif // ?__CUDA_ARCH__
 
       swp_transf_b += (__syncthreads_count(transf_b) >> WARP_SZ_LGi);
     }
