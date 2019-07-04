@@ -5,4 +5,4 @@
 #define EXPORT_VAR __attribute__((visibility("default")))
 #else /* EXPORT_VAR */
 #error EXPORT_VAR already defined
-#endif /* !EXPORT_VAR */
+#endif /* ?EXPORT_VAR */

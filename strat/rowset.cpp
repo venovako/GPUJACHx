@@ -18,7 +18,7 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif // !_GNU_SOURCE
-#endif // _WIN32
+#endif // ?_WIN32
 
 #include <algorithm>
 #include <cstdio>
@@ -32,7 +32,7 @@
 #error MIN_N defined
 #else // N >= 2
 #define MIN_N 2u
-#endif // MIN_N
+#endif // ?MIN_N
 
 #ifdef MAX_N
 #error MAX_N defined
@@ -41,8 +41,8 @@
 #define MAX_N 212u
 #else // POSIX
 #define MAX_N 254u
-#endif // _WIN32
-#endif // MAX_N
+#endif // ?_WIN32
+#endif // ?MAX_N
 
 #if (!defined(N))
 #error N not defined
@@ -52,59 +52,59 @@
 #error N > MAX_N
 #elif ((N) & 1u)
 #error N odd
-#endif // N
+#endif // ?N
 
 // # of pivots in a parallel step
 #ifdef P
 #error P defined
 #else // P = N / 2
 #define P ((N) >> 1u)
-#endif // P
+#endif // ?P
 
 // # of parallel steps in a sweep
 #ifdef S
 #error S defined
 #else // S = N - 1
 #define S ((N) - 1u)
-#endif // S
+#endif // ?S
 
 // # of matrix entries in the strictly upper/lower triangle 
 #ifdef E
 #error E defined
 #else // E = P * S
 #define E ((P) * (S))
-#endif // E
+#endif // ?E
 
 #ifdef N_1
 #error N_1 defined
 #else // N_1 = N - 1
 #define N_1 ((N) - 1u)
-#endif // N_1
+#endif // ?N_1
 
 #ifdef S_1
 #error S_1 defined
 #else // S_1 = S - 1
 #define S_1 ((S) - 1u)
-#endif // S_1
+#endif // ?S_1
 
 #ifdef P_1
 #error P_1 defined
 #else // P_1 = P - 1
 #define P_1 ((P) - 1u)
-#endif // P_1
+#endif // ?P_1
 
 #ifdef E_1
 #error E_1 defined
 #else // E_1 = E - 1
 #define E_1 ((E) - 1u)
-#endif // E_1
+#endif // ?E_1
 
 // # of the pivots not colliding with a given one
 #ifdef NCP
 #error NCP defined
 #else // NCP = E - ((N - 1) * 2 - 1)
 #define NCP ((E) - (((N_1) << 1u) - 1u))
-#endif // NCP
+#endif // ?NCP
 
 static const std::streamsize maxw = std::streamsize(5);
 

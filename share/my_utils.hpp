@@ -9,7 +9,7 @@
 #error err_msg_size not definable externally
 #endif // !err_msg_size
 
-EXTERN_C char err_msg[err_msg_size];
+extern char err_msg[err_msg_size];
 
 #ifndef WARN
 #define WARN(msg) {                                                             \

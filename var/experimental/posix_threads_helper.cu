@@ -4,7 +4,7 @@
 
 #include "my_utils.hpp"
 
-static TLS
+static __thread
 struct
 {
   int pix;
