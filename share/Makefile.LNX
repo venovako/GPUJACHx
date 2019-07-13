@@ -14,6 +14,12 @@ ifndef STD
 STD=11
 endif # !STD
 
+ifdef NDEBUG
+DEBUG=
+else # DEBUG
+DEBUG=g
+endif # ?NDEBUG
+
 ifndef HDF5
 HDF5=$(HOME)/hdf5
 endif # !HDF5
@@ -32,8 +38,7 @@ ifdef NDEBUG
 NVPPFLAGS+=-DNDEBUG
 NVCCFLAGS+=-O$(NDEBUG)
 else # debug
-NVPPFLAGS+=-UNDEBUG
-NVCCFLAGS+=-O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
+NVCCFLAGS+=-O0 -$(DEBUG) -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
 endif # NDEBUG
 
 NVLDFLAGS+=-l z,dl,m
