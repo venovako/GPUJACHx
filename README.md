@@ -2,9 +2,9 @@
 The Jacobi-type (hyperbolic) Singular Value Decomposition in CUDA (for 1 GPU).
 
 This software is a supplementary material for the paper
-[doi:10.1137/140952429](http://dx.doi.org/10.1137/140952429 "A hierarchically blocked Jacobi SVD algorithm for single and multiple graphics processing units").
+[doi:10.1137/140952429](https://doi.org/10.1137/140952429 "A hierarchically blocked Jacobi SVD algorithm for single and multiple graphics processing units").
 
-The preprint is available at [arXiv:1401.2720](http://arxiv.org/abs/1401.2720 "A hierarchically blocked Jacobi SVD algorithm for single and multiple graphics processing units").
+The preprint is available at [arXiv:1401.2720](https://arxiv.org/abs/1401.2720 "A hierarchically blocked Jacobi SVD algorithm for single and multiple graphics processing units") \[cs.NA\].
 
 Multi-GPU level is still under cleanup and will be added eventually.
 
