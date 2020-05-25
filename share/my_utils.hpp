@@ -5,9 +5,9 @@
 
 #ifndef err_msg_size
 #define err_msg_size static_cast<size_t>(1024u)
-#else // err_msg_size
+#else /* err_msg_size */
 #error err_msg_size not definable externally
-#endif // !err_msg_size
+#endif /* !err_msg_size */
 
 extern char err_msg[err_msg_size];
 
@@ -15,18 +15,18 @@ extern char err_msg[err_msg_size];
 #define WARN(msg) {                                                             \
     (void)fprintf(stderr, "[WARNING] %s(%d): %s\n", __FILE__, __LINE__, (msg)); \
   }
-#else // WARN
+#else /* WARN */
 #error WARN not definable externally
-#endif // ?WARN
+#endif /* ?WARN */
 
 #ifndef DIE
 #define DIE(msg) {                                                            \
     (void)fprintf(stderr, "[ERROR] %s(%d): %s\n", __FILE__, __LINE__, (msg)); \
     exit(EXIT_FAILURE);                                                       \
   }
-#else // DIE
+#else /* DIE */
 #error DIE not definable externally
-#endif // ?DIE
+#endif /* ?DIE */
 
 #ifndef SYSI_CALL
 #define SYSI_CALL(call) {						\
@@ -36,9 +36,9 @@ extern char err_msg[err_msg_size];
       exit(EXIT_FAILURE);                                               \
     }									\
   }
-#else // SYSI_CALL
+#else /* SYSI_CALL */
 #error SYSI_CALL not definable externally
-#endif // ?SYSI_CALL
+#endif /* ?SYSI_CALL */
 
 #ifndef SYSP_CALL
 #define SYSP_CALL(call) {						\
@@ -48,9 +48,9 @@ extern char err_msg[err_msg_size];
       exit(EXIT_FAILURE);                                               \
     }									\
   }
-#else
+#else /* SYSP_CALL */
 #error SYSP_CALL not definable externally
-#endif // ?SYSP_CALL
+#endif /* ?SYSP_CALL */
 
 EXTERN_C int fexist(const char *const fn) throw();
 
@@ -92,25 +92,25 @@ cA(T *const A, const unsigned c, const unsigned ldA) throw()
 #ifndef TS2S
 #ifdef _WIN32
 #define TS2S 1e-7
-#else // POSIX
+#else /* !_WIN32 */
 #define TS2S 1e-6
-#endif // ?_WIN32
-#else // TS2S
+#endif /* ?_WIN32 */
+#else /* TS2S */
 #error TS2S not definable externally
-#endif // ?TS2S
+#endif /* ?TS2S */
 
 #ifndef TS_S
 #ifdef _WIN32
 #define TS_S 10000000ll
-#else // POSIX
+#else /* !_WIN32 */
 #define TS_S 1000000ll
-#endif // ?_WIN32
-#else // TS_S
+#endif /* ?_WIN32 */
+#else /* TS_S */
 #error TS_S not definable externally
-#endif // ?TS_S
+#endif /* ?TS_S */
 
 EXTERN_C long long timestamp() throw();
 EXTERN_C void stopwatch_reset(long long &sw) throw();
 EXTERN_C long long stopwatch_lap(long long &sw) throw();
 
-#endif // !MY_UTILS_HPP
+#endif /* !MY_UTILS_HPP */

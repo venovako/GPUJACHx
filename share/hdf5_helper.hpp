@@ -8,9 +8,9 @@
 
 #ifndef HYPJAC_IDADIM_SIZE
 #define HYPJAC_IDADIM_SIZE static_cast<size_t>(4u)
-#else // HYPJAC_IDADIM_SIZE
+#else /* HYPJAC_IDADIM_SIZE */
 #error HYPJAC_IDADIM_SIZE not definable externally
-#endif // ?HYPJAC_IDADIM_SIZE
+#endif /* ?HYPJAC_IDADIM_SIZE */
 
 #ifndef HDF5_CALL
 #define HDF5_CALL(call) {						\
@@ -21,8 +21,8 @@
       exit(EXIT_FAILURE);                                               \
     }									\
   }
-#else // HDF5_CALL
+#else /* HDF5_CALL */
 #error HDF5_CALL not definable externally
-#endif // ?HDF5_CALL
+#endif /* ?HDF5_CALL */
 
-#endif // !HDF5_HELPER_HPP
+#endif /* !HDF5_HELPER_HPP */

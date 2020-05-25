@@ -4,22 +4,22 @@
 #ifndef _shfl_xor
 #if __CUDACC_VER_MAJOR__ >= 9
 #define _shfl_xor(x,y) __shfl_xor_sync(~0u, (x), (y))
-#else // __CUDACC_VER_MAJOR__ < 9
+#else /* __CUDACC_VER_MAJOR__ < 9 */
 #define _shfl_xor(x,y) __shfl_xor((x), (y))
-#endif // ?__CUDACC_VER_MAJOR__
-#else // _shfl_xor
+#endif /* ?__CUDACC_VER_MAJOR__ */
+#else /* _shfl_xor */
 #error _shfl_xor already defined
-#endif // ?_shfl_xor
+#endif /* ?_shfl_xor */
 
 #ifndef _shfl
 #if __CUDACC_VER_MAJOR__ >= 9
 #define _shfl(x,y) __shfl_sync(~0u, (x), (y))
-#else // __CUDACC_VER_MAJOR__ < 9
+#else /* __CUDACC_VER_MAJOR__ < 9 */
 #define _shfl(x,y) __shfl((x), (y))
-#endif // ?__CUDACC_VER_MAJOR__
-#else // _shfl
+#endif /* ?__CUDACC_VER_MAJOR__ */
+#else /* _shfl */
 #error _shfl already defined
-#endif // ?_shfl
+#endif /* ?_shfl */
 
 // sum x
 // Kepler warp shuffle
@@ -370,4 +370,4 @@ MYDEVFN void dQR32
   }
 }
 
-#endif // !DEVICE_CODE_COMMON_KEPLER_HPP
+#endif /* !DEVICE_CODE_COMMON_KEPLER_HPP */

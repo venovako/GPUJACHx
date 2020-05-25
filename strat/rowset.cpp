@@ -1,24 +1,24 @@
 #ifdef _WIN32
 #ifndef _CRT_NONSTDC_NO_DEPRECATE
 #define _CRT_NONSTDC_NO_DEPRECATE
-#endif // !_CRT_NONSTDC_NO_DEPRECATE
+#endif /* !_CRT_NONSTDC_NO_DEPRECATE */
 #ifndef _CRT_NONSTDC_NO_WARNINGS
 #define _CRT_NONSTDC_NO_WARNINGS
-#endif // !_CRT_NONSTDC_NO_WARNINGS
+#endif /* !_CRT_NONSTDC_NO_WARNINGS */
 #ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
-#endif // !_CRT_SECURE_NO_DEPRECATE
+#endif /* !_CRT_SECURE_NO_DEPRECATE */
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
-#endif // !_CRT_SECURE_NO_WARNINGS
+#endif /* !_CRT_SECURE_NO_WARNINGS */
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
-#endif // !_USE_MATH_DEFINES
-#else // !_WIN32
+#endif /* !_USE_MATH_DEFINES */
+#else /* !_WIN32 */
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
-#endif // !_GNU_SOURCE
-#endif // ?_WIN32
+#endif /* !_GNU_SOURCE */
+#endif /* ?_WIN32 */
 
 #include <algorithm>
 #include <cstdio>
@@ -30,19 +30,19 @@
 
 #ifdef MIN_N
 #error MIN_N defined
-#else // N >= 2
+#else /* N >= 2 */
 #define MIN_N 2u
-#endif // ?MIN_N
+#endif /* ?MIN_N */
 
 #ifdef MAX_N
 #error MAX_N defined
-#else // N bounded from above by...
+#else /* N bounded from above by... */
 #ifdef _WIN32
 #define MAX_N 212u
-#else // POSIX
+#else /* !_WIN32 */
 #define MAX_N 254u
-#endif // ?_WIN32
-#endif // ?MAX_N
+#endif /* ?_WIN32 */
+#endif /* ?MAX_N */
 
 #if (!defined(N))
 #error N not defined
@@ -52,59 +52,59 @@
 #error N > MAX_N
 #elif ((N) & 1u)
 #error N odd
-#endif // ?N
+#endif /* ?N */
 
 // # of pivots in a parallel step
 #ifdef P
 #error P defined
-#else // P = N / 2
+#else /* P = N / 2 */
 #define P ((N) >> 1u)
-#endif // ?P
+#endif /* ?P */
 
 // # of parallel steps in a sweep
 #ifdef S
 #error S defined
-#else // S = N - 1
+#else /* S = N - 1 */
 #define S ((N) - 1u)
-#endif // ?S
+#endif /* ?S */
 
 // # of matrix entries in the strictly upper/lower triangle 
 #ifdef E
 #error E defined
-#else // E = P * S
+#else /* E = P * S */
 #define E ((P) * (S))
-#endif // ?E
+#endif /* ?E */
 
 #ifdef N_1
 #error N_1 defined
-#else // N_1 = N - 1
+#else /* N_1 = N - 1 */
 #define N_1 ((N) - 1u)
-#endif // ?N_1
+#endif /* ?N_1 */
 
 #ifdef S_1
 #error S_1 defined
-#else // S_1 = S - 1
+#else /* S_1 = S - 1 */
 #define S_1 ((S) - 1u)
-#endif // ?S_1
+#endif /* ?S_1 */
 
 #ifdef P_1
 #error P_1 defined
-#else // P_1 = P - 1
+#else /* P_1 = P - 1 */
 #define P_1 ((P) - 1u)
-#endif // ?P_1
+#endif /* ?P_1 */
 
 #ifdef E_1
 #error E_1 defined
-#else // E_1 = E - 1
+#else /* E_1 = E - 1 */
 #define E_1 ((E) - 1u)
-#endif // ?E_1
+#endif /* ?E_1 */
 
 // # of the pivots not colliding with a given one
 #ifdef NCP
 #error NCP defined
-#else // NCP = E - ((N - 1) * 2 - 1)
+#else /* NCP = E - ((N - 1) * 2 - 1) */
 #define NCP ((E) - (((N_1) << 1u) - 1u))
-#endif // ?NCP
+#endif /* ?NCP */
 
 static const std::streamsize maxw = std::streamsize(5);
 
@@ -120,7 +120,7 @@ static void make_in_strat()
 {
 #ifndef NDEBUG
   std::cerr << "Clearing memory... " << std::flush;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   (void)memset(in_strat, 0, sizeof(in_strat));
   (void)memset(indep_sets, 0, sizeof(indep_sets));
   (void)memset(active_sets, 0, sizeof(active_sets));
@@ -132,11 +132,11 @@ static void make_in_strat()
   btrack = 0ull;
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
 
 #ifndef NDEBUG
   std::cerr << "Generating pivots... " << std::flush;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   ushort i = 0u;
   for (uchar r = 0u; r < N_1; ++r) {
     for (uchar c = r + 1u; c < N; ++c) {
@@ -147,28 +147,28 @@ static void make_in_strat()
   }
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
 
 #ifndef NDEBUG
   std::cerr << "Building independent sets... " << std::flush;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   for (i = 0u; i < E_1; ++i)
     for (ushort j = i + 1u; j < E; ++j)
       if ((in_strat[i].r != in_strat[j].r) && (in_strat[i].r != in_strat[j].c) && (in_strat[i].c != in_strat[j].r) && (in_strat[i].c != in_strat[j].c))
         indep_sets[i][indep_cnts[i]++] = j;
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
 
 #ifndef NDEBUG
   std::cerr << "Asserting monotonically non-increasing cardinalities... " << std::flush;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   for (i = 1u; i < E_1; ++i)
     if (indep_cnts[i] > indep_cnts[i - 1u])
       exit(EXIT_FAILURE);
 #ifndef NDEBUG
   std::cerr << "done" << std::endl;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
 }
 
 static bool next_pivot()
@@ -180,7 +180,7 @@ static bool next_pivot()
               << "Used " << std::setw(maxw) << max_used_cnt << " out of " <<  std::setw(maxw) << E << " pivots."
               << std::flush;
   }
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   const div_t qr = div(int(used_cnt), int(P));
   if (qr.rem) {
     const ushort prev_ix = used_set[used_cnt - 1u];
@@ -257,9 +257,9 @@ static void print_hdr()
   static const std::streamsize w = std::streamsize(1);
 #elif ((N) <= 100u)
   static const std::streamsize w = std::streamsize(2);
-#else // N <= 1000u
+#else /* N <= 1000u */
   static const std::streamsize w = std::streamsize(3);
-#endif // N
+#endif /* ?N */
 
   std::cout << "#ifdef USE_STRAT_ARRAY_DECLARATOR" << std::endl
             << "unsigned char  rowcyc" << std::setfill('0') << std::setw(maxw) << N << std::setfill(' ')
@@ -296,9 +296,9 @@ static void print_idx()
   static const std::streamsize w = std::streamsize(3);
 #elif ((E) <= 10000u)
   static const std::streamsize w = std::streamsize(4);
-#else // E <= 100000u
+#else /* E <= 100000u */
   static const std::streamsize w = std::streamsize(5);
-#endif // E
+#endif /* ?E */
 
   std::cout << "#ifdef USE_STRAT_ARRAY_DECLARATOR" << std::endl
             << "unsigned char  rowidx" << std::setfill('0') << std::setw(maxw) << N << std::setfill(' ')
@@ -335,18 +335,18 @@ int main(int argc, char *argv[])
 
 #ifndef NDEBUG
   std::cerr << "                               " << std::flush;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   const bool ok = next_pivot();
 #ifndef NDEBUG
   std::cerr << std::endl;
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   if (!ok)
     return EXIT_FAILURE;
 
   print_hdr();
 #ifndef NDEBUG
   print_idx();
-#endif // !NDEBUG
+#endif /* !NDEBUG */
   std::cout << "# of failed attempts = " << btrack << std::endl;
   return EXIT_SUCCESS;
 }

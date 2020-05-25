@@ -77,9 +77,9 @@ void initD
   const size_t shmD =
 #if __CUDA_ARCH__ >= 300
     static_cast<size_t>(0u)
-#else // Fermi
+#else /* Fermi */
     bD.x * sizeof(double)
-#endif // ?__CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
   ;
   dInitD<<< gD, bD, shmD >>>(G, D, ifc, nRow, nRank, nPlus, ldG);
 }

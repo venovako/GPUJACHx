@@ -5,10 +5,10 @@
 
 #ifdef _WIN32
 #error POSIX threading only
-#else // POSIX
+#else /* !_WIN32 */
 #include <pthread.h>
 #include <sched.h>
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
 
 typedef void*(*PThreadFn)(void*);
 
@@ -22,19 +22,19 @@ EXTERN_C void createThread(pthread_t &tid, const PThreadFn tfn, void *const arg,
 
 #ifndef MAIN_THREAD
 #define MAIN_THREAD -1
-#else // MAIN_THREAD
+#else /* MAIN_THREAD */
 #error MAIN_THREAD not definable externally
-#endif // ?MAIN_THREAD
+#endif /* ?MAIN_THREAD */
 
 #ifndef INVALID_THREAD
 #define INVALID_THREAD INT_MIN
-#else // INVALID_THREAD
+#else /* INVALID_THREAD */
 #error INVALID_THREAD not definable externally
-#endif // ?INVALID_THREAD
+#endif /* ?INVALID_THREAD */
 
 EXTERN_C int getThreadPix() throw();
 EXTERN_C int getThreadTix() throw();
 
 EXTERN_C bool barrierWait(pthread_barrier_t &bar) throw();
 
-#endif // !POSIX_THREADS_HELPER_HPP
+#endif /* !POSIX_THREADS_HELPER_HPP */

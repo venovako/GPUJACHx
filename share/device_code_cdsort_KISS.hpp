@@ -5,9 +5,9 @@ MYDEVFN unsigned dDefJacL0posd
 (volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
  volatile double *const shPtr,
-#endif // ?__CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
  const unsigned x,
  const unsigned y)
 {
@@ -45,11 +45,11 @@ MYDEVFN unsigned dDefJacL0posd
       Dp = dSum32(Dp);
       Dq = dSum32(Dq);
       Apq = dSum32(Apq);
-#else // Fermi
+#else /* Fermi */
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // ?__CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -140,9 +140,9 @@ MYDEVFN unsigned dDefJacL0negd
 (volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
  volatile double *const shPtr,
-#endif // ?__CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
  const unsigned x,
  const unsigned y)
 {
@@ -180,11 +180,11 @@ MYDEVFN unsigned dDefJacL0negd
       Dp = dSum32(Dp);
       Dq = dSum32(Dq);
       Apq = dSum32(Apq);
-#else // Fermi
+#else /* Fermi */
       Dp = dSum32(Dp, shPtr, x);
       Dq = dSum32(Dq, shPtr, x);
       Apq = dSum32(Apq, shPtr, x);
-#endif // ?__CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -271,4 +271,4 @@ MYDEVFN unsigned dDefJacL0negd
   return blk_transf_s;
 }
 
-#endif // !DEVICE_CODE_CDSORT_KISS_HPP
+#endif /* !DEVICE_CODE_CDSORT_KISS_HPP */

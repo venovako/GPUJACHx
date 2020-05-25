@@ -257,4 +257,4 @@ MYDEVFN void dQR32
   }
 }
 
-#endif // !DEVICE_CODE_COMMON_FERMI_HPP
+#endif /* !DEVICE_CODE_COMMON_FERMI_HPP */

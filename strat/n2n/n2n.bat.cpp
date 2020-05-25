@@ -1,12 +1,12 @@
 #ifndef M
 #define M (2u * N)
-#endif // !M
+#endif /* !M */
 #ifndef Sm
 #define Sm ((M) - 1u)
-#endif // !Sm
+#endif /* !Sm */
 #ifndef Pm
 #define Pm ((M) / 2u)
-#endif // !Pm
+#endif /* !Pm */
 
 static unsigned short stratM[Sm][Pm][C];
 

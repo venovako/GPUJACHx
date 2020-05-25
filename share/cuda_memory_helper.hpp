@@ -66,4 +66,4 @@ T *allocDeviceVec(const size_t m) throw()
   return ret;
 }
 
-#endif // !CUDA_MEMORY_HELPER_HPP
+#endif /* !CUDA_MEMORY_HELPER_HPP */

@@ -57,4 +57,4 @@ sum_scl(const int s1, const int s2, const double x1, const double x2, int &s, do
   }
 }
 
-#endif // !DEVICE_CODE_COMMON_SCALE_HPP
+#endif /* !DEVICE_CODE_COMMON_SCALE_HPP */

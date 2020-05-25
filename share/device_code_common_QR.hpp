@@ -93,4 +93,4 @@ MYDEVFN void dFactorize
   __syncthreads();
 }
 
-#endif // !DEVICE_CODE_COMMON_QR_HPP
+#endif /* !DEVICE_CODE_COMMON_QR_HPP */

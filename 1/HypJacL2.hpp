@@ -26,4 +26,4 @@ hypJacL2
  // WALL, SETUP & HOST ==> GPUs, COMPUTATION, CLEANUP & GPUs ==> HOST
 ) throw();
 
-#endif // !HYPJACL2_HPP
+#endif /* !HYPJACL2_HPP */

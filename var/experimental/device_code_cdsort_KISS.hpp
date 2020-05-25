@@ -6,9 +6,9 @@ MYDEVFN unsigned dDefJacL0posd
  volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
  const unsigned x,
  const unsigned y
 )
@@ -39,11 +39,11 @@ MYDEVFN unsigned dDefJacL0posd
       double Dp = dSum32(Gp * Gp);
       double Dq = dSum32(Gq * Gq);
       const double Apq = dSum32(Gp * Gq);
-#else // Fermi
+#else /* Fermi */
       double Dp = dSum32(Gp * Gp, shPtr, x);
       double Dq = dSum32(Gq * Gq, shPtr, x);
       const double Apq = dSum32(Gp * Gq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -117,13 +117,13 @@ MYDEVFN unsigned dDefJacL0posd
         F32(V, x, q) = Vp;
       }
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
       else {
         // must restore V
         F32(V, x, p) = Vp;
         F32(V, x, q) = Vq;
       }
-#endif // __CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
 
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
@@ -155,9 +155,9 @@ MYDEVFN unsigned dDefJacL0negd
  volatile double *const G,
  volatile double *const V,
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
  volatile double *const shPtr,
-#endif // __CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
  const unsigned x,
  const unsigned y
 )
@@ -188,11 +188,11 @@ MYDEVFN unsigned dDefJacL0negd
       double Dp = dSum32(Gp * Gp);
       double Dq = dSum32(Gq * Gq);
       const double Apq = dSum32(Gp * Gq);
-#else // Fermi
+#else /* Fermi */
       double Dp = dSum32(Gp * Gp, shPtr, x);
       double Dq = dSum32(Gq * Gq, shPtr, x);
       const double Apq = dSum32(Gp * Gq, shPtr, x);
-#endif // __CUDA_ARCH__
+#endif /* ?__CUDA_ARCH__ */
 
       const double
         Dp_ = __dsqrt_rn(Dp),
@@ -266,13 +266,13 @@ MYDEVFN unsigned dDefJacL0negd
         F32(V, x, q) = Vp;
       }
 #if __CUDA_ARCH__ >= 300
-#else // Fermi
+#else /* Fermi */
       else {
         // must restore V
         F32(V, x, p) = Vp;
         F32(V, x, q) = Vq;
       }
-#endif
+#endif /* ?__CUDA_ARCH__ */
 
       swp_transf_V += (__syncthreads_count(transf_V) >> WARP_SZ_LGi);
     }
@@ -299,4 +299,4 @@ MYDEVFN unsigned dDefJacL0negd
   return blk_transf_G;
 }
 
-#endif // !DEVICE_CODE_CDSORT_KISS_HPP
+#endif /* !DEVICE_CODE_CDSORT_KISS_HPP */

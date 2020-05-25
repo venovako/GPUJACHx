@@ -5,9 +5,9 @@ EXTERN_C void __stdcall GetSystemTimePreciseAsFileTime(long long*);
 EXTERN_C void* __stdcall LoadLibraryA(const char*);
 EXTERN_C void* __stdcall GetProcAddress(void*, const char*);
 EXTERN_C int __stdcall FreeLibrary(void*);
-#else // POSIX -ldl
+#else /* POSIX -ldl */
 #include <dlfcn.h>
-#endif //? _WIN32
+#endif /* ?_WIN32 */
 
 char err_msg[err_msg_size] = { '\0' };
 
@@ -21,10 +21,10 @@ int fexist(const char *const fn) throw()
     return 1;
   }
   return 0;
-#else // POSIX
+#else /* !_WIN32 */
   struct stat buf;
   return (fn ? (0 == stat(fn, &buf)) : 0);
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
 }
 
 void *strat_open(const char *const sdy) throw()
@@ -32,9 +32,9 @@ void *strat_open(const char *const sdy) throw()
   return
 #ifdef _WIN32
     LoadLibraryA(sdy);
-#else // POSIX
+#else /* !_WIN32 */
     dlopen(sdy, RTLD_LAZY);
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
 }
 
 int strat_close(void *const h) throw()
@@ -42,9 +42,9 @@ int strat_close(void *const h) throw()
   return
 #ifdef _WIN32
     !FreeLibrary(h);
-#else // POSIX
+#else /* !_WIN32 */
     dlclose(h);
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
 }
 
 const void *strat_ptr(void *const h, const char *const snp, const unsigned n) throw()
@@ -54,9 +54,9 @@ const void *strat_ptr(void *const h, const char *const snp, const unsigned n) th
   return (arrn[11] ? NULL :
 #ifdef _WIN32
     GetProcAddress(h, arrn)
-#else // POSIX
+#else /* !_WIN32 */
     dlsym(h, arrn)
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
   );
 }
 
@@ -66,11 +66,11 @@ long long timestamp() throw()
   long long ret;
   GetSystemTimePreciseAsFileTime(&ret);
   return ret;
-#else // POSIX
+#else /* !_WIN32 */
   struct timeval tv;
   SYSI_CALL(gettimeofday(&tv, static_cast<struct timezone*>(NULL)));
   return (tv.tv_sec * TS_S + tv.tv_usec);
-#endif // ?_WIN32
+#endif /* ?_WIN32 */
 }
 
 void stopwatch_reset(long long &sw) throw()

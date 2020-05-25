@@ -8,7 +8,7 @@
 
 #ifdef ANIMATE
 #include "vn_lib.h"
-#endif // ANIMATE
+#endif /* ANIMATE */
 
 int // 0 if OK, < 0 if invalid argument, > 0 if error
 hypJacL2
@@ -129,7 +129,7 @@ hypJacL2
     if (ctx)
       SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
   }
-#endif // ANIMATE
+#endif /* ANIMATE */
 
   while (blk_swp < swp) {
     *cvg_dat = 0ul;
@@ -150,7 +150,7 @@ hypJacL2
         CUDA_CALL(cudaDeviceSynchronize());
         SYSI_CALL(vn_mtxvis_frame(ctx, hG, ldhG));
       }
-#endif // ANIMATE
+#endif /* ANIMATE */
     }
 
     ++blk_swp;
@@ -171,7 +171,7 @@ hypJacL2
 #ifdef ANIMATE
   if (ctx)
     SYSI_CALL(vn_mtxvis_stop(ctx));
-#endif // ANIMATE
+#endif /* ANIMATE */
 
   *glbSwp = blk_swp;
   initD(dG, dD, 0u, nrow, ncol, nplus, static_cast<unsigned>(lddG));

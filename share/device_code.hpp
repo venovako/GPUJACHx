@@ -20,4 +20,4 @@ EXTERN_C void initV(double *const V, const unsigned ifc, const unsigned nRank, c
 
 EXTERN_C void initSymbols(double *const G, double *const V, volatile unsigned long long *const cvg, const unsigned nRow, const unsigned nCol, const unsigned ldG, const unsigned ldV, const unsigned nSwp) throw();
 
-#endif // !DEVICE_CODE_HPP
+#endif /* !DEVICE_CODE_HPP */

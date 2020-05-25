@@ -62,7 +62,7 @@ dRotH(const double Apq, const double Dp, const double Dq, double &c, double &t)
     return 1;
   }
 }
-#else // COT
+#else /* COT */
 MYDEVFN int
 dRotT(const double Apq, const double Dp, const double Dq, double &c, double &t)
 {
@@ -112,7 +112,7 @@ dRotH(const double Apq, const double Dp, const double Dq, double &c, double &t)
     return 1;
   }
 }
-#endif // ?USE_RSQRT
+#endif /* ?USE_RSQRT */
 
 // [  C S ] [ F ] = [ R ]
 // [ -S C ] [ G ]   [ 0 ]
@@ -154,4 +154,4 @@ MYDEVFN void dGivens
   }
 }
 
-#endif // !DEVICE_CODE_COMMON_ROTATE_HPP
+#endif /* !DEVICE_CODE_COMMON_ROTATE_HPP */
