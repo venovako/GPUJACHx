@@ -7,7 +7,7 @@ NVCC=nvcc
 endif # !NVCC
 
 ifndef GPU_ARCH
-GPU_ARCH=30
+GPU_ARCH=52
 endif # !GPU_ARCH
 
 ifndef STD
@@ -28,15 +28,16 @@ HDF5_I=-I$(HDF5)/include
 HDF5_L=-Xlinker -rpath=$(HDF5)/lib -L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
-THR=-pthread
-
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler $(THR),-march=native
+NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler -pthread,-march=native
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
 NVPPFLAGS+=-DNDEBUG
 NVCCFLAGS+=-O$(NDEBUG)
+ifeq ($(STD),17)
+NVCCFLAGS+=--extra-device-vectorization
+endif # ?STD
 else # debug
 NVCCFLAGS+=-O0 -$(DEBUG) -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
 endif # NDEBUG
