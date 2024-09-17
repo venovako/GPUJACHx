@@ -29,7 +29,10 @@ HDF5_L=-Xlinker -rpath=$(HDF5)/lib -L$(HDF5)/lib
 HDF5_l=-l hdf5_hl,hdf5
 
 NVPPFLAGS=-I. -I../share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler -pthread,-march=native
+ifndef CPU
+CPU=native
+endif # !CPU
+NVCCFLAGS=-std c++$(STD) -arch sm_$(GPU_ARCH) -restrict -res-usage -Xcompiler -pthread,-march=$(CPU)
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 ifdef NDEBUG
