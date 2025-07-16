@@ -1,0 +1,40 @@
+(* ::Package:: *)
+
+BeginPackage["Cycwor`",{"RowCyc`","CollideGraph`","AllIS`"}]
+Cycwor::usage="Cycwor[n] generates parallel closest-to-row-cyclic Jacobi strategy of order n."
+Begin["`Private`"]
+Cycwor[n_Integer,t_Integer,g_Graph]:=
+	Module[{i,k,l,r,s,ais=AllIS[g,t]},
+		If[n<=0,
+			r={},
+			If[(k=Length[ais])>0,
+				For[i=1,i<=k,++i,
+					s=ais[[i]];
+					l=Cycwor[n-t,t,VertexDelete[g,s]];
+					If[l=={},
+						r={s};
+						Break[],
+						If[l=={{}},
+							s={};Continue[],
+							r=Append[l,s]
+						]
+					]
+				],
+				r={{}}
+			]
+		];
+		r
+	]
+Cycwor[n_Integer]:=
+	Module[{p,q,m=(n/2)*(n-1),o=n/2,j=RowCyc[n]},
+		p=Cycwor[m,o,CollideGraph[j]];
+		If[p=={{}},
+			p={},
+			For[q=1,q<n,++q,
+				p[[q]]=Map[(j[[#]])&,p[[q]]]
+			]
+		];
+		p
+	]
+End[]
+EndPackage[]
