@@ -19,7 +19,7 @@ echo #endif // N >> %3%2.tmp
 echo #ifndef USE_STRAT_ARRAY_DECLARATOR >> %3%2.tmp
 echo #define USE_STRAT_ARRAY_DECLARATOR >> %3%2.tmp
 echo #endif // !USE_STRAT_ARRAY_DECLARATOR >> %3%2.tmp
-echo #include "dist/%3/%2.h" >> %3%2.tmp
+echo #include "../%3/%2.h" >> %3%2.tmp
 echo #ifndef strat >> %3%2.tmp
 echo #define strat %3%2 >> %3%2.tmp
 echo #else // strat >> %3%2.tmp

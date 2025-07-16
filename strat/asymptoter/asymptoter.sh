@@ -19,7 +19,7 @@ echo "#endif // N" >> $3$2.tmp
 echo "#ifndef USE_STRAT_ARRAY_DECLARATOR" >> $3$2.tmp
 echo "#define USE_STRAT_ARRAY_DECLARATOR" >> $3$2.tmp
 echo "#endif // !USE_STRAT_ARRAY_DECLARATOR" >> $3$2.tmp
-echo "#include \"dist/$3/$2.h\"" >> $3$2.tmp
+echo "#include \"../$3/$2.h\"" >> $3$2.tmp
 echo "#ifndef strat" >> $3$2.tmp
 echo "#define strat $3$2" >> $3$2.tmp
 echo "#else // strat" >> $3$2.tmp
@@ -31,4 +31,5 @@ g++ -Ofast -march=native -DN=$1u $3$2.cpp -o $3$2.exe -lm
 rm -f $3$2.exe
 rm -f $3$2.cpp
 rm -f $3$2.tmp
-pdfjoin -o $3$2.pdf $3$2_??.pdf
+#pdfjoin -o $3$2.pdf $3$2_??.pdf
+pdftk $3$2_??.pdf cat output $3$2.pdf verbose dont_ask
