@@ -6,7 +6,7 @@ This software is a supplementary material for the paper
 
 The preprint is available at [arXiv:1401.2720](https://arxiv.org/abs/1401.2720 "A hierarchically blocked Jacobi SVD algorithm for single and multiple graphics processing units") \[cs.NA\].
 
-Multi-GPU level is still under cleanup and will be added eventually.
+Multi-GPU level is still under cleanup; see also [GPUHZGSVD](https://github.com/venovako/GPUHZGSVD).
 
 Directories:
 * 1     - Test program for 1 GPU,
@@ -49,9 +49,6 @@ where
 * H5R  = optional output HDF5 file
 
 ## Input file format
-
-Here, an example of the input files can be found:
-http://euridika.math.hr:1846/Jacobi/data/
 
 In essence, an HDF5 file can contain mulitple input matrices and the associated metadata, with each input in its own HDF5 group within the file.
 
@@ -109,5 +106,9 @@ Example, for the full SVD with the block oriented variant and output in `output.
 ```bash
 ./x1.exe 0 ../strat/strat.dylib cycwor cycwor 9 input.h5 group output.h5
 ```
+
+## Talks
+
+Two related presentations are [here](https://venovako.eu/VeNoDrSc/PMAA14.pdf) and [here](https://venovako.eu/VeNoDrSc/IBMRZH.pdf).
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
