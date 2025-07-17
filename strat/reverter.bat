@@ -1,3 +1,2 @@
 @echo off
-icl.exe /nologo /fast /Qcxx-features /DNDEBUG reverter.cpp
-del reverter.obj
+icpx.exe /nologo /O3 /QxHost /DNDEBUG reverter.cpp /link /RELEASE

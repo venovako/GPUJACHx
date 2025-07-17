@@ -1,2 +1,2 @@
 @echo off
-icl.exe /nologo /fast /Qcxx-features /DN=%1u rowset.cpp /link /RELEASE
+icpx.exe /nologo /O3 /QxHost /DN=%1u rowset.cpp /link /RELEASE

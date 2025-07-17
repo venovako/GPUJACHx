@@ -1,4 +1,4 @@
 #!/bin/bash
-#icpc -DNDEBUG -fast reverter.cpp -o reverter.exe
-#gcc -DNDEBUG -Ofast reverter.cpp -o reverter.exe
+#icpx -DNDEBUG -O3 -xHost reverter.cpp -o reverter.exe
+#g++ -DNDEBUG -Ofast -march=native reverter.cpp -o reverter.exe
 clang++ -DNDEBUG -Ofast -march=native -integrated-as reverter.cpp -o reverter.exe
