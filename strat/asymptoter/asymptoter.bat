@@ -29,7 +29,6 @@ copy /v /y /a %3%2.tmp /a + %0.cpp %3%2.cpp /a
 icx.exe /nologo /O3 /QxHost /DN=%1u %3%2.cpp /link /RELEASE
 %3%2.exe %3%2
 del %3%2.exe
-del %3%2.obj
 del %3%2.cpp
 del %3%2.tmp
 del texput.aux

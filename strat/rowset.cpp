@@ -131,7 +131,7 @@ static void make_in_strat()
   max_used_cnt = used_cnt = 0u;
   btrack = 0ull;
 #ifndef NDEBUG
-  std::cerr << "done" << std::endl;
+  std::cerr << "done." << std::endl;
 #endif /* !NDEBUG */
 
 #ifndef NDEBUG
@@ -146,7 +146,7 @@ static void make_in_strat()
     }
   }
 #ifndef NDEBUG
-  std::cerr << "done" << std::endl;
+  std::cerr << "done." << std::endl;
 #endif /* !NDEBUG */
 
 #ifndef NDEBUG
@@ -157,7 +157,7 @@ static void make_in_strat()
       if ((in_strat[i].r != in_strat[j].r) && (in_strat[i].r != in_strat[j].c) && (in_strat[i].c != in_strat[j].r) && (in_strat[i].c != in_strat[j].c))
         indep_sets[i][indep_cnts[i]++] = j;
 #ifndef NDEBUG
-  std::cerr << "done" << std::endl;
+  std::cerr << "done." << std::endl;
 #endif /* !NDEBUG */
 
 #ifndef NDEBUG
@@ -167,7 +167,7 @@ static void make_in_strat()
     if (indep_cnts[i] > indep_cnts[i - 1u])
       exit(EXIT_FAILURE);
 #ifndef NDEBUG
-  std::cerr << "done" << std::endl;
+  std::cerr << "done." << std::endl;
 #endif /* !NDEBUG */
 }
 
@@ -176,8 +176,8 @@ static bool next_pivot()
 #ifndef NDEBUG
   if (max_used_cnt < used_cnt) {
     max_used_cnt = used_cnt;
-    std::cerr << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b" << std::flush
-              << "Used " << std::setw(maxw) << max_used_cnt << " out of " <<  std::setw(maxw) << E << " pivots."
+    std::cerr << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b" << std::flush
+              << "Used " << std::setw(maxw) << max_used_cnt << " out of " <<  std::setw(maxw) << E << " pivots..."
               << std::flush;
   }
 #endif /* !NDEBUG */
@@ -334,11 +334,11 @@ int main(int argc, char *argv[])
   make_in_strat();
 
 #ifndef NDEBUG
-  std::cerr << "                               " << std::flush;
+  std::cerr << "                                 " << std::flush;
 #endif /* !NDEBUG */
   const bool ok = next_pivot();
 #ifndef NDEBUG
-  std::cerr << std::endl;
+  std::cerr << (ok ? " done." : " error!") << std::endl;
 #endif /* !NDEBUG */
   if (!ok)
     return EXIT_FAILURE;
