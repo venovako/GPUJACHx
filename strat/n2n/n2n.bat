@@ -28,7 +28,7 @@ echo #ifndef stratM >> %2.tmp
 echo #define stratM genstrat(%3) >> %2.tmp
 echo #endif // !stratM >> %2.tmp
 copy /v /y /a %2.tmp /a + %0.cpp %2.cpp /a
-icpx.exe /nologo /O3 /QxHost /DN=%1u %2.cpp /link /RELEASE
+icx.exe /nologo /O3 /QxHost /DN=%1u %2.cpp /link /RELEASE
 %2.exe %4 > %3.h
 del %2.exe
 del %2.obj

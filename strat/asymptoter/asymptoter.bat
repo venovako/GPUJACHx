@@ -26,7 +26,7 @@ echo #else // strat >> %3%2.tmp
 echo #error strat already defined >> %3%2.tmp
 echo #endif // !strat >> %3%2.tmp
 copy /v /y /a %3%2.tmp /a + %0.cpp %3%2.cpp /a
-icpx.exe /nologo /O3 /QxHost /DN=%1u %3%2.cpp /link /RELEASE
+icx.exe /nologo /O3 /QxHost /DN=%1u %3%2.cpp /link /RELEASE
 %3%2.exe %3%2
 del %3%2.exe
 del %3%2.obj
