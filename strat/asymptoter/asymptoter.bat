@@ -34,4 +34,4 @@ del %3%2.cpp
 del %3%2.tmp
 del texput.aux
 del texput.log
-"C:\Program Files (x86)\PDFtk\bin\pdftk.exe" %3%2_??.pdf cat output %3%2.pdf verbose dont_ask
+pdftk.exe %3%2_??.pdf cat output %3%2.pdf verbose dont_ask

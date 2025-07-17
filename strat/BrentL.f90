@@ -1,5 +1,5 @@
-! ifort.exe /standard-semantics /fast BrentL.f90 /link /RELEASE
-! ifort -standard-semantics -fast BrentL.f90 -o BrentL.exe -s
+! ifx.exe /standard-semantics /Ofast BrentL.f90 /link /RELEASE
+! ifx -standard-semantics -Ofast BrentL.f90 -o BrentL.exe
 
 program BrentL
 
