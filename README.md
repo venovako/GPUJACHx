@@ -17,18 +17,16 @@ Build strategy tables:
 ```bash
 cd strat
 ./proc_all-lnx.sh         (Linux), or
-./proc_all-win.bat        (Windows), or
-./proc_all-mac.sh         (MacOS).
+./proc_all-win.bat        (Windows).
 ```
 
 Build the test program:
 ```bash
 cd 1
 ./mkLNX.sh  SM D          (Linux), or
-./mkWIN.bat SM D          (Windows), or
-./mkMAC.sh  SM D          (MacOS), where
+./mkWIN.bat SM D          (Windows), where
 ```
-* SM = target GPU architecture (e.g., 30 or 35 or 37 for Kepler, 20 for Fermi),
+* SM = target GPU architecture (e.g., `sm_52` or `native`),
 * D  = optimization level (usually 3).
 
 Prerequisites for the test program:
