@@ -134,12 +134,8 @@ my_drsqrt_rn(double a)
 
 #include "device_code_common_rotate.hpp"
 #include "device_code_common_scale.hpp"
-
-#if __CUDA_ARCH__ >= 300
 #include "device_code_common_Kepler.hpp"
-#else /* Fermi */
-#include "device_code_common_Fermi.hpp"
-#endif /* ?__CUDA_ARCH__ */
+//Fermi: #include "device_code_common_Fermi.hpp"
 
 #ifdef USE_QR
 #include "device_code_common_QR.hpp"
@@ -197,11 +193,7 @@ MYKERN dInitD
  const unsigned nPlus,
  const unsigned ldG)
 {
-#if __CUDA_ARCH__ >= 300
-#else /* Fermi */
-  extern __shared__ double shPool[];
-#endif /* ?__CUDA_ARCH__ */
-
+  //Fermi: extern __shared__ double shPool[];
   const unsigned wpb = (blockDim.x + WARP_SZ_SUB1) >> WARP_SZ_LG;
   const unsigned wid = threadIdx.x >> WARP_SZ_LG;
 
@@ -215,12 +207,9 @@ MYKERN dInitD
       y = *pGi;
       x = __fma_rn(y, y, x);
     }
-#if __CUDA_ARCH__ >= 300
     y = dSum32(x);
-#else /* Fermi */
-    volatile double *const shPtr = (volatile double*)(shPool + wid * WARP_SZ);
-    y = dSum32(x, shPtr, lid);
-#endif /* ?__CUDA_ARCH__ */
+    //Fermi: volatile double *const shPtr = (volatile double*)(shPool + wid * WARP_SZ);
+    //Fermi: y = dSum32(x, shPtr, lid);
     x = __dsqrt_rn(y);
     for (double *pGi = bGi; pGi < eGi; pGi += WARP_SZ)
       *pGi = __ddiv_rn(*pGi, x);

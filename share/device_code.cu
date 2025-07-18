@@ -74,13 +74,7 @@ void initD
 {
   const dim3 bD(2u * WARP_SZ, 1u, 1u);
   const dim3 gD(udiv_ceil(nRank * WARP_SZ, bD.x), 1u, 1u);
-  const size_t shmD =
-#if __CUDA_ARCH__ >= 300
-    static_cast<size_t>(0u)
-#else /* Fermi */
-    bD.x * sizeof(double)
-#endif /* ?__CUDA_ARCH__ */
-  ;
+  const size_t shmD = static_cast<size_t>(0u); //Fermi: bD.x * sizeof(double)
   dInitD<<< gD, bD, shmD >>>(G, D, ifc, nRow, nRank, nPlus, ldG);
 }
 

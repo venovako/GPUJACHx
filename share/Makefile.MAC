@@ -56,7 +56,6 @@ HEADERS2=						\
 	../share/device_code_globals.hpp		\
 	../share/device_code_common_rotate.hpp		\
 	../share/device_code_common_scale.hpp		\
-	../share/device_code_common_Fermi.hpp		\
 	../share/device_code_common_Kepler.hpp		\
 	../share/device_code_common_Cholesky.hpp	\
 	../share/device_code_common_QR.hpp		\

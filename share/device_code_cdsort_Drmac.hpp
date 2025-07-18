@@ -4,10 +4,7 @@
 MYDEVFN unsigned dDefJacL0posd
 (volatile double *const G,
  volatile double *const V,
-#if __CUDA_ARCH__ >= 300
-#else /* Fermi */
- volatile double *const shPtr,
-#endif /* ?__CUDA_ARCH__ */
+ //Fermi: volatile double *const shPtr,
  const unsigned x,
  const unsigned y)
 {
@@ -34,15 +31,12 @@ MYDEVFN unsigned dDefJacL0posd
       __syncthreads();
 
       const double
-#if __CUDA_ARCH__ >= 300
         Ap = dNRM2_32(Gp),
         Aq = dNRM2_32(Gq),
         CosA = dCOSA(Ap, Aq, Gp, Gq);
-#else /* Fermi */
-        Ap = dNRM2_32(Gp, shPtr, x),
-        Aq = dNRM2_32(Gq, shPtr, x),
-        CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
-#endif /* ?__CUDA_ARCH__ */
+        //Fermi: Ap = dNRM2_32(Gp, shPtr, x),
+        //Fermi: Aq = dNRM2_32(Gq, shPtr, x),
+        //Fermi: CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
 
       const int transf_s = (fabs(CosA) >= HYPJAC_MYTOL);
       swp_transf_s += (__syncthreads_count(transf_s) >> WARP_SZ_LGi);
@@ -132,14 +126,11 @@ MYDEVFN unsigned dDefJacL0posd
         F32(V, x, p) = Vq;
         F32(V, x, q) = Vp;
       }
-#if __CUDA_ARCH__ >= 300
-#else /* Fermi */
-      else {
-        // must restore V
-        F32(V, x, p) = Vp;
-        F32(V, x, q) = Vq;
-      }
-#endif /* ?__CUDA_ARCH__ */
+      //Fermi: else {
+        //Fermi: must restore V
+        //Fermi: F32(V, x, p) = Vp;
+        //Fermi: F32(V, x, q) = Vq;
+      //Fermi: }
 
       swp_transf_b += (__syncthreads_count(transf_b) >> WARP_SZ_LGi);
     }
@@ -170,10 +161,7 @@ MYDEVFN unsigned dDefJacL0posd
 MYDEVFN unsigned dDefJacL0negd
 (volatile double *const G,
  volatile double *const V,
-#if __CUDA_ARCH__ >= 300
-#else /* Fermi */
- volatile double *const shPtr,
-#endif /* ?__CUDA_ARCH__ */
+ //Fermi: volatile double *const shPtr,
  const unsigned x,
  const unsigned y)
 {
@@ -200,15 +188,12 @@ MYDEVFN unsigned dDefJacL0negd
       __syncthreads();
 
       const double
-#if __CUDA_ARCH__ >= 300
         Ap = dNRM2_32(Gp),
         Aq = dNRM2_32(Gq),
         CosA = dCOSA(Ap, Aq, Gp, Gq);
-#else /* Fermi */
-        Ap = dNRM2_32(Gp, shPtr, x),
-        Aq = dNRM2_32(Gq, shPtr, x),
-        CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
-#endif /* ?__CUDA_ARCH__ */
+        //Fermi: Ap = dNRM2_32(Gp, shPtr, x),
+        //Fermi: Aq = dNRM2_32(Gq, shPtr, x),
+        //Fermi: CosA = dCOSA(Ap, Aq, Gp, Gq, shPtr, x);
 
       const int transf_s = (fabs(CosA) >= HYPJAC_MYTOL);
       swp_transf_s += (__syncthreads_count(transf_s) >> WARP_SZ_LGi);
@@ -298,14 +283,11 @@ MYDEVFN unsigned dDefJacL0negd
         F32(V, x, p) = Vq;
         F32(V, x, q) = Vp;
       }
-#if __CUDA_ARCH__ >= 300
-#else /* Fermi */
-      else {
-        // must restore V
-        F32(V, x, p) = Vp;
-        F32(V, x, q) = Vq;
-      }
-#endif /* ?__CUDA_ARCH__ */
+      //Fermi: else {
+        //Fermi: must restore V
+        //Fermi: F32(V, x, p) = Vp;
+        //Fermi: F32(V, x, q) = Vq;
+      //Fermi: }
 
       swp_transf_b += (__syncthreads_count(transf_b) >> WARP_SZ_LGi);
     }
