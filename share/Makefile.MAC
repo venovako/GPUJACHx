@@ -11,7 +11,7 @@ GPU_ARCH=30
 endif # !GPU_ARCH
 
 ifndef STD
-STD=11
+STD=14
 endif # !STD
 
 ifdef NDEBUG

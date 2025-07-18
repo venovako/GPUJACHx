@@ -22,7 +22,7 @@ HDF5=C:\HDF5
 
 HDF5_I=-I$(HDF5)\include
 HDF5_L=-L$(HDF5)\lib
-HDF5_l=-l hdf5_hl,hdf5
+HDF5_l=-l libhdf5_hl,libhdf5
 
 NVPPFLAGS=-I. -I..\share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
 NVCCFLAGS=-std c++20 -arch $(GPU_ARCH) -restrict -res-usage -Wno-deprecated-gpu-targets -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD$(DEBUG)
