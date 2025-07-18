@@ -1,0 +1,67 @@
+!IFNDEF RM
+RM=del /F
+!ENDIF # !RM
+
+!IFNDEF NVCC
+NVCC=nvcc.exe
+!ENDIF # !NVCC
+
+!IFNDEF GPU_ARCH
+GPU_ARCH=sm_30
+!ENDIF # !GPU_ARCH
+
+!IFDEF NDEBUG
+DEBUG=
+!ELSE # DEBUG
+DEBUG=d
+!ENDIF # ?NDEBUG
+
+!IFNDEF HDF5
+HDF5=C:\HDF5
+!ENDIF # !HDF5
+
+HDF5_I=-I$(HDF5)\include
+HDF5_L=-L$(HDF5)\lib
+HDF5_l=-l libhdf5_hl,libhdf5
+
+NVPPFLAGS=-I. -I..\share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
+NVCCFLAGS=--use-local-env -std c++14 -arch $(GPU_ARCH) -restrict -res-usage -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD$(DEBUG)
+NVLDFLAGS=$(HDF5_L) $(HDF5_l)
+
+!IFDEF NDEBUG
+NVPPFLAGS=$(NVPPFLAGS) -DNDEBUG
+NVCCFLAGS=$(NVCCFLAGS) -O$(NDEBUG)
+!ELSE # debug
+NVCCFLAGS=$(NVCCFLAGS) -O0 -g -G -src-in-ptx -Xptxas -no-bb-merge,-ret-end
+!ENDIF # NDEBUG
+
+HEADERS2=						\
+	..\share\cuda_helper.hpp			\
+	..\share\cuda_memory_helper.hpp			\
+	..\share\defines.hpp				\
+	..\share\device_code.hpp			\
+	..\share\device_code_accumV.hpp 		\
+	..\share\device_code_cdsort.hpp 		\
+	..\share\device_code_cdsort_Drmac.hpp 		\
+	..\share\device_code_cdsort_KISS.hpp 		\
+	..\share\device_code_cdsort_accumV.hpp		\
+	..\share\device_code_cdsort_solveV.hpp		\
+	..\share\device_code_common.hpp			\
+	..\share\device_code_globals.hpp		\
+	..\share\device_code_common_rotate.hpp		\
+	..\share\device_code_common_scale.hpp		\
+	..\share\device_code_common_Kepler.hpp		\
+	..\share\device_code_common_Cholesky.hpp	\
+	..\share\device_code_common_QR.hpp		\
+	..\share\device_code_nosort.hpp			\
+	..\share\device_code_nosort_accumV.hpp		\
+	..\share\device_code_nosort_solveV.hpp		\
+	..\share\hdf5_helper.hpp			\
+	..\share\HypJacL.hpp				\
+	..\share\my_utils.hpp
+
+SOURCES2=				\
+	..\share\cuda_helper.cu		\
+	..\share\device_code.cu		\
+	..\share\HypJacL.cu		\
+	..\share\my_utils.cu
