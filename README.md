@@ -38,7 +38,7 @@ Test run:
 ```
 where
 * DEV  = CUDA device number
-* SDY  = path to strat.so (Linux), or strat.dll (Windows), or strat.dylib (MacOS)
+* SDY  = path to strat.so (Linux) or strat.dll (Windows)
 * SNP0 = BrentL or rowcyc or colcyc or cycwor or cycloc or mmstep strategy
 * SNP1 = BrentL or rowcyc or colcyc or cycwor or cycloc or mmstep strategy
 * ALG  = algorithm number (see 1/HypJacL2.hpp)
@@ -102,8 +102,9 @@ It is expected that the fastest execution will be with cycwor.
 
 Example, for the full SVD with the block oriented variant and output in `output.h5`:
 ```bash
-./x1.exe 0 ../strat/strat.dylib cycwor cycwor 9 input.h5 group output.h5
+./x1.exe 0 ../strat/strat.EXT cycwor cycwor 9 input.h5 group output.h5
 ```
+where `EXT` is `so` (Linux) or `dll` (Windows).
 
 ## Talks
 
