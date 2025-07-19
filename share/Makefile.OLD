@@ -22,10 +22,10 @@ HDF5=C:\HDF5
 
 HDF5_I=-I$(HDF5)\include
 HDF5_L=-L$(HDF5)\lib
-HDF5_l=-l libhdf5_hl,libhdf5
+HDF5_l=-l libhdf5_hl,libhdf5,ShLwApi
 
 NVPPFLAGS=-I. -I..\share $(HDF5_I) -DUSE_RSQRT #-DUSE_DRMAC
-NVCCFLAGS=--use-local-env -std c++14 -arch $(GPU_ARCH) -restrict -res-usage -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD$(DEBUG)
+NVCCFLAGS=--use-local-env -arch $(GPU_ARCH) -restrict -res-usage -Xcompiler /EHsc,/favor:INTEL64,/fp:precise,/GF,/GR,/GS-,/GT,/MD$(DEBUG)
 NVLDFLAGS=$(HDF5_L) $(HDF5_l)
 
 !IFDEF NDEBUG
