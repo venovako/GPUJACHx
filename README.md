@@ -102,9 +102,17 @@ It is expected that the fastest execution will be with cycwor.
 
 Example, for the full SVD with the block oriented variant and output in `output.h5`:
 ```bash
-./x1.exe 0 ../strat/strat.EXT cycwor cycwor 9 input.h5 group output.h5
+./x1.exe 0 ../strat/strat.so cycwor cycwor 9 input.h5 group output.h5
 ```
-where `EXT` is `so` (Linux) or `dll` (Windows).
+on Linux, or on Windows:
+```bash
+x1.exe 0 ..\strat\strat.dll cycwor cycwor 9 input.h5 group output.h5
+```
+
+### Other
+
+A Windows (VS2019) build of the static [HDF5](https://github.com/HDFGroup/hdf5) libraries can be found [here](https://venovako.eu/HDF5.exe).
+It is meant to be used with the `*OLD` scripts from this repository and is tested with a CUDA 10.2 build of `x1.exe` for Kepler (`sm_30`).
 
 ## Talks
 
