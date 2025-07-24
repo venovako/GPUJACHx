@@ -111,7 +111,7 @@ x1.exe 0 ..\strat\strat.dll cycwor cycwor 9 input.h5 group output.h5
 
 ### Other
 
-A Windows (VS2019) build of the static [HDF5](https://github.com/HDFGroup/hdf5) libraries can be found [here](https://venovako.eu/HDF5.exe).
+A Windows (VS2019) build of the static [HDF5](https://github.com/HDFGroup/hdf5) libraries can be found [here](https://venovako.eu/win64/HDF5.exe).
 It is meant to be used with the `*OLD` scripts from this repository and is tested with a CUDA 10.2 build of `x1.exe` for Kepler (`sm_30`).
 
 ## Talks
