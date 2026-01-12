@@ -114,7 +114,8 @@ typedef unsigned short ushort;
 static ushort indep_sets[E_1][NCP], active_sets[E_1][NCP];
 static ushort indep_cnts[E_1], active_cnts[E_1];
 static ushort used_set[E], tmp_set[E], used_cnt, max_used_cnt;
-static unsigned long long btrack;
+typedef unsigned long long ullong;
+static ullong btrack;
 
 static void make_in_strat()
 {
