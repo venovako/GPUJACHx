@@ -1,2 +1,2 @@
 @echo off
-icl.exe /nologo /O3 /QxHost /DN=%1u %2 /Ferowset_%1.exe rowset.cpp /link /RELEASE
+icx.exe /nologo /O3 /QxHost /DN=%1u %2 /Ferowset_%1.exe rowset.cpp /link /RELEASE
