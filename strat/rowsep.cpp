@@ -1,5 +1,3 @@
-// TODO: check the correctness
-
 #ifdef _WIN32
 #ifndef _CRT_NONSTDC_NO_DEPRECATE
 #define _CRT_NONSTDC_NO_DEPRECATE
@@ -32,7 +30,7 @@
 
 #ifdef _OPENMP
 #include <omp.h>
-#endif /* _OPENMP */
+#endif // _OPENMP
 
 #ifdef MIN_N
 #error MIN_N defined
@@ -211,7 +209,7 @@ static bool next_pivot()
 
 #ifdef _OPENMP
 #pragma omp parallel for default(none) shared(j,p_c,prev_ix,prev_end,active_sets,active_cnts,indep_sets,indep_cnts)
-#endif /* _OPENMP */
+#endif // _OPENMP
         for (ushort i = j; i < p_c; ++i) {
           const ushort my_ix = active_sets[prev_ix][i];
           const ushort mync_cnt = indep_cnts[my_ix];
@@ -344,9 +342,9 @@ int main(int argc, char *argv[])
   make_in_strat();
 #ifdef _OPENMP
   mxt = ushort(omp_get_max_threads());
-#else /* !_OPENMP */
+#else // !_OPENMP
   mxt = 0u;
-#endif /* ?_OPENMP */
+#endif // ?_OPENMP
   if (mxt < 1u)
     mxt = 1u;
 
