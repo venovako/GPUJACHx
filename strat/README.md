@@ -56,3 +56,7 @@ Add another `else if` block that handles `foobar`, i.e., `STRAT_FOOBAR`, and set
 ### Recompile and test the main code
 
 Note that, as long as the strategy name or maximal supported matrix order does not change, any additions or changes to the new strategy set requires rebuilding of the shared library only.
+
+## Other notes
+
+See [CombJac](https://github.com/venovako/CombJac) for a polished version of `rowset.cpp`.
